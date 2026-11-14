@@ -211,7 +211,7 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Photographs used across the website. Upload the original high-resolution files; resized versions are created automatically.
+ * All photos used on the website. Upload the original photo (JPG, PNG or WebP); smaller copies for fast loading are made automatically.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -219,10 +219,11 @@ export interface Post {
 export interface Media {
   id: number;
   /**
-   * Short description of the photo, for screen readers and search engines.
+   * A few words describing the photo, e.g. “Members at the Mumbai roundtable”. Filled in from the file name if left empty.
    */
-  alt: string;
-  credit?: string | null;
+  alt?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -270,7 +271,7 @@ export interface Media {
   };
 }
 /**
- * Downloadable files such as reports, brochures and audio.
+ * Downloadable files such as report PDFs, the partnership brochure and podcast audio.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "documents".
@@ -278,6 +279,8 @@ export interface Media {
 export interface Document {
   id: number;
   title: string;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -291,6 +294,8 @@ export interface Document {
   focalY?: number | null;
 }
 /**
+ * Events shown on Home and Events. Once you add one, the sample event cards disappear. Tick “Featured” to put an event in the dark Flagship Summit box.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
@@ -322,6 +327,8 @@ export interface Event {
   createdAt: string;
 }
 /**
+ * Shown under Leadership & Ecosystem Council on About Us. Once you add someone, the sample names disappear.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leaders".
  */
@@ -343,7 +350,7 @@ export interface Leader {
   createdAt: string;
 }
 /**
- * Shown under “Active Volunteers” on the About page. Import Google Form responses with `npm run import:volunteers -- responses.csv`.
+ * Shown under “Active Volunteers” on About Us. Once you add one, the placeholder cards disappear. To add many at once, use ⋮ → Import with a CSV.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "volunteers".
@@ -405,12 +412,16 @@ export interface Submission {
   createdAt: string;
 }
 /**
+ * Résumés open from the job-seeker enquiry they belong to.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "resumes".
  */
 export interface Resume {
   id: number;
   candidate?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -486,6 +497,8 @@ export interface Export {
     | number
     | boolean
     | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -523,6 +536,8 @@ export interface Import {
       | boolean
       | null;
   };
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -847,7 +862,8 @@ export interface SubscribersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  credit?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -910,6 +926,8 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface DocumentsSelect<T extends boolean = true> {
   title?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -928,6 +946,8 @@ export interface DocumentsSelect<T extends boolean = true> {
  */
 export interface ResumesSelect<T extends boolean = true> {
   candidate?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -981,6 +1001,8 @@ export interface ExportsSelect<T extends boolean = true> {
   fields?: T;
   collectionSlug?: T;
   where?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1011,6 +1033,8 @@ export interface ImportsSelect<T extends boolean = true> {
         issues?: T;
         issueDetails?: T;
       };
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1095,123 +1119,69 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
- * Hero (top) and closing-banner (above the footer) photograph for each page. Landscape photos at least 2400px wide work best.
+ * Change the photos on each page: click a box, upload a photo (or pick one already uploaded), then press Save. The website updates straight away.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-images".
  */
 export interface SiteImage {
   id: number;
-  home?: {
-    /**
-     * Full-width image behind the page title.
-     */
-    hero?: (number | null) | Media;
-    /**
-     * Full-width image in the banner right above the footer.
-     */
-    banner?: (number | null) | Media;
-  };
   about?: {
     /**
-     * Full-width image behind the page title.
+     * The framed photo beside the page title. Leave empty to keep the current IFF photo.
      */
     hero?: (number | null) | Media;
-    /**
-     * Full-width image in the banner right above the footer.
-     */
-    banner?: (number | null) | Media;
   };
   professionals?: {
     /**
-     * Full-width image behind the page title.
+     * Full-width photo behind the page title. Use a wide (landscape) photo. Leave empty to keep the current IFF photo.
      */
     hero?: (number | null) | Media;
     /**
-     * Full-width image in the banner right above the footer.
+     * Faint background photo in the “Be Part of the Conversations” banner above the footer. Leave empty to keep the current IFF photo.
      */
     banner?: (number | null) | Media;
   };
   organisations?: {
     /**
-     * Full-width image behind the page title.
+     * Full-width photo behind the page title. Use a wide (landscape) photo. Leave empty to keep the current IFF photo.
      */
     hero?: (number | null) | Media;
     /**
-     * Full-width image in the banner right above the footer.
+     * Photo beside “The right partnership puts your brand in the right room.” Leave empty to keep the current IFF photo.
+     */
+    feature?: (number | null) | Media;
+    /**
+     * Faint background photo in the “Create meaningful industry impact” banner above the footer. Leave empty to keep the current IFF photo.
      */
     banner?: (number | null) | Media;
   };
   events?: {
     /**
-     * Full-width image behind the page title.
+     * The framed photo beside the page title. Leave empty to keep the current IFF photo.
      */
     hero?: (number | null) | Media;
     /**
-     * Full-width image in the banner right above the footer.
+     * Photo on the right of the dark “Flagship Summit” box. Leave empty to keep the current IFF photo.
      */
-    banner?: (number | null) | Media;
-  };
-  knowledgeHub?: {
+    summit?: (number | null) | Media;
     /**
-     * Full-width image behind the page title.
+     * Photos that scroll across the page below the events. Add 4–8 photos. Leave empty to keep the current IFF photo.
      */
-    hero?: (number | null) | Media;
-    /**
-     * Full-width image in the banner right above the footer.
-     */
-    banner?: (number | null) | Media;
+    gallery?: (number | Media)[] | null;
   };
   jobSeekers?: {
     /**
-     * Full-width image behind the page title.
+     * The framed photo beside the page title. Leave empty to keep the current IFF photo.
      */
     hero?: (number | null) | Media;
-    /**
-     * Full-width image in the banner right above the footer.
-     */
-    banner?: (number | null) | Media;
   };
   speaking?: {
     /**
-     * Full-width image behind the page title.
+     * The framed photo beside the page title. Leave empty to keep the current IFF photo.
      */
     hero?: (number | null) | Media;
-    /**
-     * Full-width image in the banner right above the footer.
-     */
-    banner?: (number | null) | Media;
   };
-  contact?: {
-    /**
-     * Full-width image behind the page title.
-     */
-    hero?: (number | null) | Media;
-    /**
-     * Full-width image in the banner right above the footer.
-     */
-    banner?: (number | null) | Media;
-  };
-  /**
-   * Events page – flagship summit feature.
-   */
-  summit?: (number | null) | Media;
-  /**
-   * For Organisations – “right room” section.
-   */
-  organisationsFeature?: (number | null) | Media;
-  /**
-   * Job Seekers – “conversation” section.
-   */
-  careersFeature?: (number | null) | Media;
-  /**
-   * About Us – our journey section.
-   */
-  aboutStory?: (number | null) | Media;
-  /**
-   * Event highlights strip on the Home and Events pages.
-   */
-  gallery?: (number | Media)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1222,34 +1192,21 @@ export interface SiteImage {
 export interface SiteSetting {
   id: number;
   /**
-   * Full-colour logo for light backgrounds (SVG or transparent PNG).
+   * Shown in the header (and in white in the footer). Upload the colour logo as SVG or a transparent PNG. Leave empty to keep the current logo.
    */
   logo?: (number | null) | Media;
   /**
-   * Optional white logo for dark backgrounds. If empty, the main logo is shown in white.
-   */
-  logoInverse?: (number | null) | Media;
-  email?: string | null;
-  phone?: string | null;
-  offices?:
-    | {
-        city: string;
-        address?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  linkedin?: string | null;
-  whatsapp?: string | null;
-  /**
-   * Shown in the “trusted by” strip. Add a logo, or just a name.
+   * Names in the “Trusted by leading institutions” strip on Home and About. Leave empty to keep the current list.
    */
   partners?:
     | {
         name: string;
-        logo?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Enables the “Download Partnership Brochure” button on For Organisations.
+   */
   brochure?: (number | null) | Document;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1259,17 +1216,10 @@ export interface SiteSetting {
  * via the `definition` "site-images_select".
  */
 export interface SiteImagesSelect<T extends boolean = true> {
-  home?:
-    | T
-    | {
-        hero?: T;
-        banner?: T;
-      };
   about?:
     | T
     | {
         hero?: T;
-        banner?: T;
       };
   professionals?:
     | T
@@ -1281,43 +1231,26 @@ export interface SiteImagesSelect<T extends boolean = true> {
     | T
     | {
         hero?: T;
+        feature?: T;
         banner?: T;
       };
   events?:
     | T
     | {
         hero?: T;
-        banner?: T;
-      };
-  knowledgeHub?:
-    | T
-    | {
-        hero?: T;
-        banner?: T;
+        summit?: T;
+        gallery?: T;
       };
   jobSeekers?:
     | T
     | {
         hero?: T;
-        banner?: T;
       };
   speaking?:
     | T
     | {
         hero?: T;
-        banner?: T;
       };
-  contact?:
-    | T
-    | {
-        hero?: T;
-        banner?: T;
-      };
-  summit?: T;
-  organisationsFeature?: T;
-  careersFeature?: T;
-  aboutStory?: T;
-  gallery?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1328,23 +1261,10 @@ export interface SiteImagesSelect<T extends boolean = true> {
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   logo?: T;
-  logoInverse?: T;
-  email?: T;
-  phone?: T;
-  offices?:
-    | T
-    | {
-        city?: T;
-        address?: T;
-        id?: T;
-      };
-  linkedin?: T;
-  whatsapp?: T;
   partners?:
     | T
     | {
         name?: T;
-        logo?: T;
         id?: T;
       };
   brochure?: T;

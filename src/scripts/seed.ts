@@ -46,7 +46,6 @@ if (!settings.partners?.length) {
     slug: 'site-settings',
     data: {
       partners: ['SBI', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Kotak', 'Bajaj Finserv', 'Adani'].map((name) => ({ name })),
-      offices: [{ city: 'Mumbai', address: 'BKC Financial District' }, { city: 'New Delhi', address: 'Connaught Place' }],
     },
   })
 }

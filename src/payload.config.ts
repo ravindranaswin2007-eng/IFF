@@ -48,6 +48,7 @@ export default buildConfig({
     user: Users.slug,
     meta: { titleSuffix: ' · IFF Admin' },
     avatar: 'default',
+    components: { beforeDashboard: ['/components/admin/QuickActions#QuickActions'] },
     importMap: { baseDir: path.resolve(dirname) },
   },
   collections: [
@@ -75,32 +76,32 @@ export default buildConfig({
         { slug: 'subscribers', import: false, export: { disableJobsQueue: true } },
         { slug: 'volunteers', export: { disableJobsQueue: true }, import: { disableJobsQueue: true } },
       ],
-      overrideExportCollection: ({ collection }) => ({ ...collection, admin: { ...collection.admin, group: 'Enquiries' }, access: { ...collection.access, read: ({ req }) => Boolean(req.user) } }),
-      overrideImportCollection: ({ collection }) => ({ ...collection, admin: { ...collection.admin, group: 'People' } }),
+      // The plugin's own bookkeeping collections stay out of the sidebar; exports/imports are started from the ⋮ menu.
+      overrideExportCollection: ({ collection }) => ({ ...collection, admin: { ...collection.admin, group: 'Enquiries', hidden: true }, access: { ...collection.access, read: ({ req }) => Boolean(req.user) } }),
+      overrideImportCollection: ({ collection }) => ({ ...collection, admin: { ...collection.admin, group: 'People', hidden: true } }),
     }),
-    // Vercel hosting: uploads go to Vercel Blob (files are served through Payload, so résumés stay staff-only).
-    ...(!useS3 && process.env.BLOB_READ_WRITE_TOKEN
-      ? [
-          vercelBlobStorage({
-            collections: { media: true, documents: true, resumes: true, exports: true, imports: true },
-            token: process.env.BLOB_READ_WRITE_TOKEN,
-            addRandomSuffix: true,
-          }),
-        ]
-      : []),
-    ...(useS3
-    ? [
-        s3Storage({
-          collections: { media: { prefix: 'media' }, documents: { prefix: 'documents' }, resumes: { prefix: 'resumes' }, exports: { prefix: 'exports' }, imports: { prefix: 'imports' } },
-          bucket: process.env.S3_BUCKET as string,
-          config: {
-            region: process.env.S3_REGION,
-            ...(process.env.S3_ACCESS_KEY_ID
-              ? { credentials: { accessKeyId: process.env.S3_ACCESS_KEY_ID, secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string } }
-              : {}),
-          },
-        }),
-      ]
-    : []),
+    // File storage. Both adapters are always registered (with alwaysInsertFields) so the database schema is
+    // identical everywhere; only the one whose credentials are present is switched on.
+    // Vercel hosting → Vercel Blob. AWS hosting → S3. Local development → local disk.
+    // Files are served through Payload, so résumés stay staff-only.
+    vercelBlobStorage({
+      enabled: !useS3 && Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      alwaysInsertFields: true,
+      collections: { media: true, documents: true, resumes: true, exports: true, imports: true },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+      addRandomSuffix: true,
+    }),
+    s3Storage({
+      enabled: useS3,
+      alwaysInsertFields: true,
+      collections: { media: { prefix: 'media' }, documents: { prefix: 'documents' }, resumes: { prefix: 'resumes' }, exports: { prefix: 'exports' }, imports: { prefix: 'imports' } },
+      bucket: process.env.S3_BUCKET || '',
+      config: {
+        region: process.env.S3_REGION,
+        ...(process.env.S3_ACCESS_KEY_ID
+          ? { credentials: { accessKeyId: process.env.S3_ACCESS_KEY_ID, secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string } }
+          : {}),
+      },
+    }),
   ],
 })

@@ -1,14 +1,22 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, isLoggedIn } from '../access'
 
+/** "IFF-summit_2025 (1).jpg" → "IFF summit 2025" */
+const fromFilename = (filename?: string | null) =>
+  (filename ?? '').replace(/\.[a-z0-9]+$/i, '').replace(/\(\d+\)/g, '').replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim() || 'IFF photo'
+
 export const Media: CollectionConfig = {
   slug: 'media',
-  labels: { singular: 'Image', plural: 'Images' },
-  admin: { group: 'Library', description: 'Photographs used across the website. Upload the original high-resolution files; resized versions are created automatically.' },
+  labels: { singular: 'Photo', plural: 'Photo library' },
+  admin: {
+    group: 'Library',
+    useAsTitle: 'alt',
+    defaultColumns: ['filename', 'alt', 'updatedAt'],
+    description: 'All photos used on the website. Upload the original photo (JPG, PNG or WebP); smaller copies for fast loading are made automatically.',
+  },
   access: { read: anyone, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
   upload: {
     mimeTypes: ['image/*'],
-    // SVG logos are stored as-is; raster photos get resized copies.
     focalPoint: true,
     imageSizes: [
       { name: 'thumb', width: 480, height: 320, position: 'centre' },
@@ -20,7 +28,12 @@ export const Media: CollectionConfig = {
     formatOptions: { format: 'webp', options: { quality: 82 } },
   },
   fields: [
-    { name: 'alt', type: 'text', required: true, admin: { description: 'Short description of the photo, for screen readers and search engines.' } },
-    { name: 'credit', type: 'text' },
+    {
+      name: 'alt',
+      label: 'Description (optional)',
+      type: 'text',
+      admin: { description: 'A few words describing the photo, e.g. “Members at the Mumbai roundtable”. Filled in from the file name if left empty.' },
+      hooks: { beforeValidate: [({ value, data }) => (value && String(value).trim()) || fromFilename(data?.filename)] },
+    },
   ],
 }

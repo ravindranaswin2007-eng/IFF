@@ -1,44 +1,70 @@
 import type { Field, GlobalConfig } from 'payload'
 import { anyone, isLoggedIn } from '../access'
 
-export const PAGE_KEYS = ['home', 'about', 'professionals', 'organisations', 'events', 'knowledgeHub', 'jobSeekers', 'speaking', 'contact'] as const
+export const PAGE_KEYS = ['about', 'professionals', 'organisations', 'events', 'jobSeekers', 'speaking'] as const
 export type PageKey = (typeof PAGE_KEYS)[number]
 
-const labels: Record<PageKey, string> = {
-  home: 'Home', about: 'About Us', professionals: 'For Professionals', organisations: 'For Organisations', events: 'Events',
-  knowledgeHub: 'Knowledge Hub', jobSeekers: 'Job Seekers', speaking: 'Speaking', contact: 'Contact Us',
-}
+const KEEP = 'Leave empty to keep the current IFF photo.'
+const photo = (name: string, label: string, where: string): Field => ({
+  name,
+  label,
+  type: 'upload',
+  relationTo: 'media',
+  admin: { description: `${where} ${KEEP}` },
+})
 
-const img = (name: string, label: string, description: string): Field => ({ name, label, type: 'upload', relationTo: 'media', admin: { description } })
-
-/** One place to set the photographs on every page's hero and closing banner. */
+/**
+ * Every photograph slot on the website, grouped by page. Choose or upload a photo, press Save,
+ * and the page updates immediately. Pages not listed here (Home, Knowledge Hub, Contact) have no photos.
+ */
 export const SiteImages: GlobalConfig = {
   slug: 'site-images',
   label: 'Page photographs',
-  admin: { group: 'Settings', description: 'Hero (top) and closing-banner (above the footer) photograph for each page. Landscape photos at least 2400px wide work best.' },
+  admin: {
+    group: 'Website',
+    description: 'Change the photos on each page: click a box, upload a photo (or pick one already uploaded), then press Save. The website updates straight away.',
+  },
   access: { read: anyone, update: isLoggedIn },
   fields: [
     {
       type: 'tabs',
       tabs: [
-        ...PAGE_KEYS.map((key) => ({
-          name: key,
-          label: labels[key],
-          fields: [
-            img('hero', 'Hero photograph', 'Full-width image behind the page title.'),
-            img('banner', 'Closing banner photograph', 'Full-width image in the banner right above the footer.'),
-          ],
-        })),
+        { name: 'about', label: 'About Us', fields: [photo('hero', 'Top photo', 'The framed photo beside the page title.')] },
         {
-          label: 'Other photographs',
+          name: 'professionals',
+          label: 'For Professionals',
           fields: [
-            img('summit', 'Flagship summit', 'Events page – flagship summit feature.'),
-            img('organisationsFeature', 'Organisations feature', 'For Organisations – “right room” section.'),
-            img('careersFeature', 'Careers feature', 'Job Seekers – “conversation” section.'),
-            img('aboutStory', 'About story', 'About Us – our journey section.'),
-            { name: 'gallery', type: 'upload', relationTo: 'media', hasMany: true, admin: { description: 'Event highlights strip on the Home and Events pages.' } },
+            photo('hero', 'Top background photo', 'Full-width photo behind the page title. Use a wide (landscape) photo.'),
+            photo('banner', 'Bottom banner photo', 'Faint background photo in the “Be Part of the Conversations” banner above the footer.'),
           ],
         },
+        {
+          name: 'organisations',
+          label: 'For Organisations',
+          fields: [
+            photo('hero', 'Top background photo', 'Full-width photo behind the page title. Use a wide (landscape) photo.'),
+            photo('feature', 'Middle photo', 'Photo beside “The right partnership puts your brand in the right room.”'),
+            photo('banner', 'Bottom banner photo', 'Faint background photo in the “Create meaningful industry impact” banner above the footer.'),
+          ],
+        },
+        {
+          name: 'events',
+          label: 'Events',
+          fields: [
+            photo('hero', 'Top photo', 'The framed photo beside the page title.'),
+            photo('summit', 'Flagship summit photo', 'Photo on the right of the dark “Flagship Summit” box.'),
+            {
+              name: 'gallery',
+              label: 'Scrolling photo strip',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: true,
+              admin: { description: `Photos that scroll across the page below the events. Add 4–8 photos. ${KEEP}` },
+            },
+          ],
+        },
+        { name: 'jobSeekers', label: 'Job Seekers', fields: [photo('hero', 'Top photo', 'The framed photo beside the page title.')] },
+        { name: 'speaking', label: 'Speaking', fields: [photo('hero', 'Top photo', 'The framed photo beside the page title.')] },
       ],
     },
   ],
@@ -46,16 +72,19 @@ export const SiteImages: GlobalConfig = {
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
-  label: 'Site settings',
-  admin: { group: 'Settings' },
+  label: 'Logo, partners & brochure',
+  admin: { group: 'Website' },
   access: { read: anyone, update: isLoggedIn },
   fields: [
-    { name: 'logo', type: 'upload', relationTo: 'media', admin: { description: 'Full-colour logo for light backgrounds (SVG or transparent PNG).' } },
-    { name: 'logoInverse', type: 'upload', relationTo: 'media', label: 'Logo (white version)', admin: { description: 'Optional white logo for dark backgrounds. If empty, the main logo is shown in white.' } },
-    { type: 'row', fields: [{ name: 'email', type: 'email' }, { name: 'phone', type: 'text' }] },
-    { name: 'offices', type: 'array', fields: [{ name: 'city', type: 'text', required: true }, { name: 'address', type: 'text' }] },
-    { type: 'row', fields: [{ name: 'linkedin', type: 'text', label: 'LinkedIn URL' }, { name: 'whatsapp', type: 'text', label: 'WhatsApp community link' }] },
-    { name: 'partners', type: 'array', label: 'Partner institutions', admin: { description: 'Shown in the “trusted by” strip. Add a logo, or just a name.' }, fields: [{ name: 'name', type: 'text', required: true }, { name: 'logo', type: 'upload', relationTo: 'media' }] },
-    { name: 'brochure', type: 'upload', relationTo: 'documents', label: 'Partnership brochure' },
+    { name: 'logo', type: 'upload', relationTo: 'media', admin: { description: 'Shown in the header (and in white in the footer). Upload the colour logo as SVG or a transparent PNG. Leave empty to keep the current logo.' } },
+    {
+      name: 'partners',
+      type: 'array',
+      label: 'Partner institutions',
+      labels: { singular: 'Partner', plural: 'Partners' },
+      admin: { description: 'Names in the “Trusted by leading institutions” strip on Home and About. Leave empty to keep the current list.' },
+      fields: [{ name: 'name', type: 'text', required: true }],
+    },
+    { name: 'brochure', type: 'upload', relationTo: 'documents', label: 'Partnership brochure (PDF)', admin: { description: 'Enables the “Download Partnership Brochure” button on For Organisations.' } },
   ],
 }

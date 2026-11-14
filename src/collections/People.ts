@@ -12,7 +12,7 @@ const personFields: CollectionConfig['fields'] = [
 export const Leaders: CollectionConfig = {
   slug: 'leaders',
   labels: { singular: 'Leader', plural: 'Leadership' },
-  admin: { group: 'People', useAsTitle: 'name', defaultColumns: ['name', 'group', 'designation'] },
+  admin: { group: 'People', useAsTitle: 'name', defaultColumns: ['name', 'group', 'designation'], description: 'Shown under Leadership & Ecosystem Council on About Us. Once you add someone, the sample names disappear.' },
   access: { read: anyone, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
   defaultSort: 'order',
   fields: [
@@ -24,7 +24,7 @@ export const Leaders: CollectionConfig = {
 
 export const Volunteers: CollectionConfig = {
   slug: 'volunteers',
-  admin: { group: 'People', useAsTitle: 'name', defaultColumns: ['name', 'designation', 'organisation', 'city', 'active'], description: 'Shown under “Active Volunteers” on the About page. Import Google Form responses with `npm run import:volunteers -- responses.csv`.' },
+  admin: { group: 'People', useAsTitle: 'name', defaultColumns: ['name', 'designation', 'organisation', 'city', 'active'], description: 'Shown under “Active Volunteers” on About Us. Once you add one, the placeholder cards disappear. To add many at once, use ⋮ → Import with a CSV.' },
   access: { read: anyone, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
   defaultSort: 'order',
   fields: [

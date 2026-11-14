@@ -26,8 +26,8 @@ export function mediaUrl(value: unknown, size: 'thumb' | 'card' | 'wide' | 'xl' 
 
 export async function getPageImages(page: PageKey) {
   const images = await getSiteImages()
-  const group = images[page] as { hero?: unknown; banner?: unknown } | undefined
-  return { hero: asMedia(group?.hero), banner: asMedia(group?.banner), all: images }
+  const group = images[page] as { hero?: unknown; banner?: unknown; feature?: unknown; summit?: unknown; gallery?: unknown[] | null } | undefined
+  return { hero: asMedia(group?.hero), banner: asMedia(group?.banner), feature: asMedia(group?.feature), summit: asMedia(group?.summit), gallery: (group?.gallery ?? []).map(asMedia).filter(Boolean) as Media[] }
 }
 
 export async function getPosts({ type, limit = 24, featured }: { type?: string; limit?: number; featured?: boolean } = {}) {

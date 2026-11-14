@@ -12,7 +12,7 @@ export const EVENT_CATEGORIES = [
 
 export const Events: CollectionConfig = {
   slug: 'events',
-  admin: { group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'category', 'startDate', 'city'] },
+  admin: { group: 'Content', useAsTitle: 'title', defaultColumns: ['title', 'category', 'startDate', 'city'], description: 'Events shown on Home and Events. Once you add one, the sample event cards disappear. Tick “Featured” to put an event in the dark Flagship Summit box.' },
   access: { read: anyone, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
   defaultSort: 'startDate',
   fields: [
