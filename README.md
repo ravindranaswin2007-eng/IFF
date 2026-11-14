@@ -62,6 +62,22 @@ npm run migrate:create -- describe-the-change   # writes a migration into src/mi
 
 Production applies pending migrations automatically when the container starts.
 
+## Deploying to Vercel (interim hosting)
+
+The same code runs on Vercel. It needs a Postgres database and a Vercel Blob store for uploads.
+
+1. Vercel → **Add New → Project** → import this GitHub repo (framework: Next.js, defaults are fine).
+2. Before the first deploy, add **Environment Variables**:
+   | Key | Value |
+   |---|---|
+   | `DATABASE_URI` | Postgres connection string. For Supabase: project → **Connect** → *Session pooler* URI (IPv4), with your database password filled in. |
+   | `PAYLOAD_SECRET` | a long random string (`openssl rand -hex 32`) |
+   | `SERVER_URL` | the site URL, e.g. `https://iff.vercel.app` |
+3. Project → **Storage → Create → Blob** and connect it to the project (this adds `BLOB_READ_WRITE_TOKEN`).
+4. Deploy. On first start the app creates its tables in the `iff` schema. Open `/admin` to create the first admin.
+
+Tables live in their own `iff` schema (not `public`), so Supabase's auto-generated public API cannot read them.
+
 ## Deploying to AWS
 
 Everything is defined in `infra/` with the AWS CDK. One command creates and updates the whole stack:

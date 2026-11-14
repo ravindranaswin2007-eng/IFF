@@ -4,6 +4,7 @@ import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import sharp from 'sharp'
 
@@ -22,9 +23,13 @@ import { migrations } from './migrations'
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const useS3 = Boolean(process.env.S3_BUCKET)
 
-/** DATABASE_URI, or one assembled from the DB_* variables that ECS injects from the RDS secret. */
+/**
+ * Connection string from DATABASE_URI, the variables Vercel's Neon/Supabase integrations add
+ * (POSTGRES_URL / DATABASE_URL), or the DB_* parts that ECS injects from the RDS secret on AWS.
+ */
 function databaseUri() {
-  if (process.env.DATABASE_URI) return process.env.DATABASE_URI
+  const direct = process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL
+  if (direct) return direct
   const { DB_HOST, DB_PORT = '5432', DB_NAME = 'iff', DB_USER, DB_PASSWORD } = process.env
   if (!DB_HOST || !DB_USER) return ''
   return `postgres://${encodeURIComponent(DB_USER)}:${encodeURIComponent(DB_PASSWORD ?? '')}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
@@ -51,8 +56,11 @@ export default buildConfig({
   globals: [withRevalidate(SiteImages), withRevalidate(SiteSettings)],
   editor: lexicalEditor(),
   db: postgresAdapter({
-    pool: { connectionString: databaseUri(), ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined },
+    pool: { connectionString: databaseUri(), ssl: process.env.DATABASE_SSL === 'true' || /sslmode=require/.test(databaseUri()) ? { rejectUnauthorized: false } : undefined,
+      max: process.env.VERCEL ? 3 : 10 },
     // Production applies the committed migrations on boot; development pushes schema changes directly.
+    // Own schema keeps IFF tables out of any auto-exposed "public" API (e.g. Supabase's Data API).
+    schemaName: process.env.DATABASE_SCHEMA || 'iff',
     prodMigrations: migrations,
   }),
   sharp,
@@ -68,6 +76,16 @@ export default buildConfig({
       overrideExportCollection: ({ collection }) => ({ ...collection, admin: { ...collection.admin, group: 'Enquiries' }, access: { ...collection.access, read: ({ req }) => Boolean(req.user) } }),
       overrideImportCollection: ({ collection }) => ({ ...collection, admin: { ...collection.admin, group: 'People' } }),
     }),
+    // Vercel hosting: uploads go to Vercel Blob (files are served through Payload, so résumés stay staff-only).
+    ...(!useS3 && process.env.BLOB_READ_WRITE_TOKEN
+      ? [
+          vercelBlobStorage({
+            collections: { media: true, documents: true, resumes: true, exports: true, imports: true },
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+            addRandomSuffix: true,
+          }),
+        ]
+      : []),
     ...(useS3
     ? [
         s3Storage({

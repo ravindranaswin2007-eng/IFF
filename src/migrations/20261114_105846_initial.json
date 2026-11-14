@@ -2,9 +2,9 @@
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.posts": {
+    "iff.posts": {
       "name": "posts",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -21,7 +21,7 @@
         "type": {
           "name": "type",
           "type": "enum_posts_type",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false,
           "default": "'blog'"
@@ -109,7 +109,7 @@
         "_status": {
           "name": "_status",
           "type": "enum_posts_status",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false,
           "default": "'draft'"
@@ -212,6 +212,7 @@
           "name": "posts_cover_id_media_id_fk",
           "tableFrom": "posts",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "cover_id"
           ],
@@ -225,6 +226,7 @@
           "name": "posts_file_id_documents_id_fk",
           "tableFrom": "posts",
           "tableTo": "documents",
+          "schemaTo": "iff",
           "columnsFrom": [
             "file_id"
           ],
@@ -241,9 +243,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.posts_texts": {
+    "iff.posts_texts": {
       "name": "posts_texts",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -304,6 +306,7 @@
           "name": "posts_texts_parent_fk",
           "tableFrom": "posts_texts",
           "tableTo": "posts",
+          "schemaTo": "iff",
           "columnsFrom": [
             "parent_id"
           ],
@@ -320,9 +323,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public._posts_v": {
+    "iff._posts_v": {
       "name": "_posts_v",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -345,7 +348,7 @@
         "version_type": {
           "name": "version_type",
           "type": "enum__posts_v_version_type",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false,
           "default": "'blog'"
@@ -431,7 +434,7 @@
         "version__status": {
           "name": "version__status",
           "type": "enum__posts_v_version_status",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false,
           "default": "'draft'"
@@ -614,6 +617,7 @@
           "name": "_posts_v_parent_id_posts_id_fk",
           "tableFrom": "_posts_v",
           "tableTo": "posts",
+          "schemaTo": "iff",
           "columnsFrom": [
             "parent_id"
           ],
@@ -627,6 +631,7 @@
           "name": "_posts_v_version_cover_id_media_id_fk",
           "tableFrom": "_posts_v",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "version_cover_id"
           ],
@@ -640,6 +645,7 @@
           "name": "_posts_v_version_file_id_documents_id_fk",
           "tableFrom": "_posts_v",
           "tableTo": "documents",
+          "schemaTo": "iff",
           "columnsFrom": [
             "version_file_id"
           ],
@@ -656,9 +662,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public._posts_v_texts": {
+    "iff._posts_v_texts": {
       "name": "_posts_v_texts",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -719,6 +725,7 @@
           "name": "_posts_v_texts_parent_fk",
           "tableFrom": "_posts_v_texts",
           "tableTo": "_posts_v",
+          "schemaTo": "iff",
           "columnsFrom": [
             "parent_id"
           ],
@@ -735,9 +742,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.events": {
+    "iff.events": {
       "name": "events",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -760,7 +767,7 @@
         "category": {
           "name": "category",
           "type": "enum_events_category",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": true
         },
@@ -785,7 +792,7 @@
         "format": {
           "name": "format",
           "type": "enum_events_format",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false
         },
@@ -889,6 +896,7 @@
           "name": "events_image_id_media_id_fk",
           "tableFrom": "events",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "image_id"
           ],
@@ -905,9 +913,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.leaders": {
+    "iff.leaders": {
       "name": "leaders",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -960,7 +968,7 @@
         "group": {
           "name": "group",
           "type": "enum_leaders_group",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": true,
           "default": "'community'"
@@ -1038,6 +1046,7 @@
           "name": "leaders_photo_id_media_id_fk",
           "tableFrom": "leaders",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "photo_id"
           ],
@@ -1054,9 +1063,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.volunteers": {
+    "iff.volunteers": {
       "name": "volunteers",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -1186,6 +1195,7 @@
           "name": "volunteers_photo_id_media_id_fk",
           "tableFrom": "volunteers",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "photo_id"
           ],
@@ -1202,9 +1212,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.submissions": {
+    "iff.submissions": {
       "name": "submissions",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -1215,14 +1225,14 @@
         "kind": {
           "name": "kind",
           "type": "enum_submissions_kind",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": true
         },
         "status": {
           "name": "status",
           "type": "enum_submissions_status",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false,
           "default": "'new'"
@@ -1393,6 +1403,7 @@
           "name": "submissions_resume_id_resumes_id_fk",
           "tableFrom": "submissions",
           "tableTo": "resumes",
+          "schemaTo": "iff",
           "columnsFrom": [
             "resume_id"
           ],
@@ -1406,6 +1417,7 @@
           "name": "submissions_event_id_events_id_fk",
           "tableFrom": "submissions",
           "tableTo": "events",
+          "schemaTo": "iff",
           "columnsFrom": [
             "event_id"
           ],
@@ -1422,9 +1434,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.subscribers": {
+    "iff.subscribers": {
       "name": "subscribers",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -1507,9 +1519,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.media": {
+    "iff.media": {
       "name": "media",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -1856,9 +1868,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.documents": {
+    "iff.documents": {
       "name": "documents",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -1995,9 +2007,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.resumes": {
+    "iff.resumes": {
       "name": "resumes",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -2134,9 +2146,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.users_sessions": {
+    "iff.users_sessions": {
       "name": "users_sessions",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "_order": {
           "name": "_order",
@@ -2206,6 +2218,7 @@
           "name": "users_sessions_parent_id_fk",
           "tableFrom": "users_sessions",
           "tableTo": "users",
+          "schemaTo": "iff",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -2222,9 +2235,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.users": {
+    "iff.users": {
       "name": "users",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -2241,7 +2254,7 @@
         "role": {
           "name": "role",
           "type": "enum_users_role",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": true,
           "default": "'admin'"
@@ -2364,9 +2377,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.exports": {
+    "iff.exports": {
       "name": "exports",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -2383,7 +2396,7 @@
         "format": {
           "name": "format",
           "type": "enum_exports_format",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": true,
           "default": "'csv'"
@@ -2410,14 +2423,14 @@
         "sort_order": {
           "name": "sort_order",
           "type": "enum_exports_sort_order",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false
         },
         "drafts": {
           "name": "drafts",
           "type": "enum_exports_drafts",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false,
           "default": "'yes'"
@@ -2559,9 +2572,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.exports_texts": {
+    "iff.exports_texts": {
       "name": "exports_texts",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -2622,6 +2635,7 @@
           "name": "exports_texts_parent_fk",
           "tableFrom": "exports_texts",
           "tableTo": "exports",
+          "schemaTo": "iff",
           "columnsFrom": [
             "parent_id"
           ],
@@ -2638,9 +2652,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.imports": {
+    "iff.imports": {
       "name": "imports",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -2658,7 +2672,7 @@
         "import_mode": {
           "name": "import_mode",
           "type": "enum_imports_import_mode",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false
         },
@@ -2672,7 +2686,7 @@
         "status": {
           "name": "status",
           "type": "enum_imports_status",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false,
           "default": "'pending'"
@@ -2830,9 +2844,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.payload_kv": {
+    "iff.payload_kv": {
       "name": "payload_kv",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -2877,9 +2891,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.payload_jobs_log": {
+    "iff.payload_jobs_log": {
       "name": "payload_jobs_log",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "_order": {
           "name": "_order",
@@ -2914,7 +2928,7 @@
         "task_slug": {
           "name": "task_slug",
           "type": "enum_payload_jobs_log_task_slug",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": true
         },
@@ -2939,7 +2953,7 @@
         "state": {
           "name": "state",
           "type": "enum_payload_jobs_log_state",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": true
         },
@@ -2987,6 +3001,7 @@
           "name": "payload_jobs_log_parent_id_fk",
           "tableFrom": "payload_jobs_log",
           "tableTo": "payload_jobs",
+          "schemaTo": "iff",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -3003,9 +3018,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.payload_jobs": {
+    "iff.payload_jobs": {
       "name": "payload_jobs",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -3048,7 +3063,7 @@
         "task_slug": {
           "name": "task_slug",
           "type": "enum_payload_jobs_task_slug",
-          "typeSchema": "public",
+          "typeSchema": "iff",
           "primaryKey": false,
           "notNull": false
         },
@@ -3231,9 +3246,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.payload_locked_documents": {
+    "iff.payload_locked_documents": {
       "name": "payload_locked_documents",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -3316,9 +3331,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.payload_locked_documents_rels": {
+    "iff.payload_locked_documents_rels": {
       "name": "payload_locked_documents_rels",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -3607,6 +3622,7 @@
           "name": "payload_locked_documents_rels_parent_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "payload_locked_documents",
+          "schemaTo": "iff",
           "columnsFrom": [
             "parent_id"
           ],
@@ -3620,6 +3636,7 @@
           "name": "payload_locked_documents_rels_posts_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "posts",
+          "schemaTo": "iff",
           "columnsFrom": [
             "posts_id"
           ],
@@ -3633,6 +3650,7 @@
           "name": "payload_locked_documents_rels_events_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "events",
+          "schemaTo": "iff",
           "columnsFrom": [
             "events_id"
           ],
@@ -3646,6 +3664,7 @@
           "name": "payload_locked_documents_rels_leaders_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "leaders",
+          "schemaTo": "iff",
           "columnsFrom": [
             "leaders_id"
           ],
@@ -3659,6 +3678,7 @@
           "name": "payload_locked_documents_rels_volunteers_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "volunteers",
+          "schemaTo": "iff",
           "columnsFrom": [
             "volunteers_id"
           ],
@@ -3672,6 +3692,7 @@
           "name": "payload_locked_documents_rels_submissions_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "submissions",
+          "schemaTo": "iff",
           "columnsFrom": [
             "submissions_id"
           ],
@@ -3685,6 +3706,7 @@
           "name": "payload_locked_documents_rels_subscribers_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "subscribers",
+          "schemaTo": "iff",
           "columnsFrom": [
             "subscribers_id"
           ],
@@ -3698,6 +3720,7 @@
           "name": "payload_locked_documents_rels_media_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "media_id"
           ],
@@ -3711,6 +3734,7 @@
           "name": "payload_locked_documents_rels_documents_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "documents",
+          "schemaTo": "iff",
           "columnsFrom": [
             "documents_id"
           ],
@@ -3724,6 +3748,7 @@
           "name": "payload_locked_documents_rels_resumes_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "resumes",
+          "schemaTo": "iff",
           "columnsFrom": [
             "resumes_id"
           ],
@@ -3737,6 +3762,7 @@
           "name": "payload_locked_documents_rels_users_fk",
           "tableFrom": "payload_locked_documents_rels",
           "tableTo": "users",
+          "schemaTo": "iff",
           "columnsFrom": [
             "users_id"
           ],
@@ -3753,9 +3779,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.payload_preferences": {
+    "iff.payload_preferences": {
       "name": "payload_preferences",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -3844,9 +3870,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.payload_preferences_rels": {
+    "iff.payload_preferences_rels": {
       "name": "payload_preferences_rels",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -3946,6 +3972,7 @@
           "name": "payload_preferences_rels_parent_fk",
           "tableFrom": "payload_preferences_rels",
           "tableTo": "payload_preferences",
+          "schemaTo": "iff",
           "columnsFrom": [
             "parent_id"
           ],
@@ -3959,6 +3986,7 @@
           "name": "payload_preferences_rels_users_fk",
           "tableFrom": "payload_preferences_rels",
           "tableTo": "users",
+          "schemaTo": "iff",
           "columnsFrom": [
             "users_id"
           ],
@@ -3975,9 +4003,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.payload_migrations": {
+    "iff.payload_migrations": {
       "name": "payload_migrations",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -4051,9 +4079,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.site_images": {
+    "iff.site_images": {
       "name": "site_images",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -4543,6 +4571,7 @@
           "name": "site_images_home_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "home_hero_id"
           ],
@@ -4556,6 +4585,7 @@
           "name": "site_images_home_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "home_banner_id"
           ],
@@ -4569,6 +4599,7 @@
           "name": "site_images_about_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "about_hero_id"
           ],
@@ -4582,6 +4613,7 @@
           "name": "site_images_about_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "about_banner_id"
           ],
@@ -4595,6 +4627,7 @@
           "name": "site_images_professionals_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "professionals_hero_id"
           ],
@@ -4608,6 +4641,7 @@
           "name": "site_images_professionals_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "professionals_banner_id"
           ],
@@ -4621,6 +4655,7 @@
           "name": "site_images_organisations_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "organisations_hero_id"
           ],
@@ -4634,6 +4669,7 @@
           "name": "site_images_organisations_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "organisations_banner_id"
           ],
@@ -4647,6 +4683,7 @@
           "name": "site_images_events_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "events_hero_id"
           ],
@@ -4660,6 +4697,7 @@
           "name": "site_images_events_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "events_banner_id"
           ],
@@ -4673,6 +4711,7 @@
           "name": "site_images_knowledge_hub_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "knowledge_hub_hero_id"
           ],
@@ -4686,6 +4725,7 @@
           "name": "site_images_knowledge_hub_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "knowledge_hub_banner_id"
           ],
@@ -4699,6 +4739,7 @@
           "name": "site_images_job_seekers_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "job_seekers_hero_id"
           ],
@@ -4712,6 +4753,7 @@
           "name": "site_images_job_seekers_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "job_seekers_banner_id"
           ],
@@ -4725,6 +4767,7 @@
           "name": "site_images_speaking_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "speaking_hero_id"
           ],
@@ -4738,6 +4781,7 @@
           "name": "site_images_speaking_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "speaking_banner_id"
           ],
@@ -4751,6 +4795,7 @@
           "name": "site_images_contact_hero_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "contact_hero_id"
           ],
@@ -4764,6 +4809,7 @@
           "name": "site_images_contact_banner_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "contact_banner_id"
           ],
@@ -4777,6 +4823,7 @@
           "name": "site_images_summit_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "summit_id"
           ],
@@ -4790,6 +4837,7 @@
           "name": "site_images_organisations_feature_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "organisations_feature_id"
           ],
@@ -4803,6 +4851,7 @@
           "name": "site_images_careers_feature_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "careers_feature_id"
           ],
@@ -4816,6 +4865,7 @@
           "name": "site_images_about_story_id_media_id_fk",
           "tableFrom": "site_images",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "about_story_id"
           ],
@@ -4832,9 +4882,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.site_images_rels": {
+    "iff.site_images_rels": {
       "name": "site_images_rels",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -4934,6 +4984,7 @@
           "name": "site_images_rels_parent_fk",
           "tableFrom": "site_images_rels",
           "tableTo": "site_images",
+          "schemaTo": "iff",
           "columnsFrom": [
             "parent_id"
           ],
@@ -4947,6 +4998,7 @@
           "name": "site_images_rels_media_fk",
           "tableFrom": "site_images_rels",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "media_id"
           ],
@@ -4963,9 +5015,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.site_settings_offices": {
+    "iff.site_settings_offices": {
       "name": "site_settings_offices",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "_order": {
           "name": "_order",
@@ -5035,6 +5087,7 @@
           "name": "site_settings_offices_parent_id_fk",
           "tableFrom": "site_settings_offices",
           "tableTo": "site_settings",
+          "schemaTo": "iff",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -5051,9 +5104,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.site_settings_partners": {
+    "iff.site_settings_partners": {
       "name": "site_settings_partners",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "_order": {
           "name": "_order",
@@ -5138,6 +5191,7 @@
           "name": "site_settings_partners_logo_id_media_id_fk",
           "tableFrom": "site_settings_partners",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "logo_id"
           ],
@@ -5151,6 +5205,7 @@
           "name": "site_settings_partners_parent_id_fk",
           "tableFrom": "site_settings_partners",
           "tableTo": "site_settings",
+          "schemaTo": "iff",
           "columnsFrom": [
             "_parent_id"
           ],
@@ -5167,9 +5222,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.site_settings": {
+    "iff.site_settings": {
       "name": "site_settings",
-      "schema": "",
+      "schema": "iff",
       "columns": {
         "id": {
           "name": "id",
@@ -5284,6 +5339,7 @@
           "name": "site_settings_logo_id_media_id_fk",
           "tableFrom": "site_settings",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "logo_id"
           ],
@@ -5297,6 +5353,7 @@
           "name": "site_settings_logo_inverse_id_media_id_fk",
           "tableFrom": "site_settings",
           "tableTo": "media",
+          "schemaTo": "iff",
           "columnsFrom": [
             "logo_inverse_id"
           ],
@@ -5310,6 +5367,7 @@
           "name": "site_settings_brochure_id_documents_id_fk",
           "tableFrom": "site_settings",
           "tableTo": "documents",
+          "schemaTo": "iff",
           "columnsFrom": [
             "brochure_id"
           ],
@@ -5328,9 +5386,9 @@
     }
   },
   "enums": {
-    "public.enum_posts_type": {
+    "iff.enum_posts_type": {
       "name": "enum_posts_type",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "blog",
         "report",
@@ -5339,17 +5397,17 @@
         "news"
       ]
     },
-    "public.enum_posts_status": {
+    "iff.enum_posts_status": {
       "name": "enum_posts_status",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "draft",
         "published"
       ]
     },
-    "public.enum__posts_v_version_type": {
+    "iff.enum__posts_v_version_type": {
       "name": "enum__posts_v_version_type",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "blog",
         "report",
@@ -5358,17 +5416,17 @@
         "news"
       ]
     },
-    "public.enum__posts_v_version_status": {
+    "iff.enum__posts_v_version_status": {
       "name": "enum__posts_v_version_status",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "draft",
         "published"
       ]
     },
-    "public.enum_events_category": {
+    "iff.enum_events_category": {
       "name": "enum_events_category",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "summit",
         "roundtable",
@@ -5377,26 +5435,26 @@
         "weekly"
       ]
     },
-    "public.enum_events_format": {
+    "iff.enum_events_format": {
       "name": "enum_events_format",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "In-person",
         "Virtual",
         "Hybrid"
       ]
     },
-    "public.enum_leaders_group": {
+    "iff.enum_leaders_group": {
       "name": "enum_leaders_group",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "community",
         "advisory"
       ]
     },
-    "public.enum_submissions_kind": {
+    "iff.enum_submissions_kind": {
       "name": "enum_submissions_kind",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "contact",
         "membership",
@@ -5406,59 +5464,59 @@
         "event"
       ]
     },
-    "public.enum_submissions_status": {
+    "iff.enum_submissions_status": {
       "name": "enum_submissions_status",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "new",
         "in-progress",
         "closed"
       ]
     },
-    "public.enum_users_role": {
+    "iff.enum_users_role": {
       "name": "enum_users_role",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "admin",
         "editor"
       ]
     },
-    "public.enum_exports_format": {
+    "iff.enum_exports_format": {
       "name": "enum_exports_format",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "csv",
         "json"
       ]
     },
-    "public.enum_exports_sort_order": {
+    "iff.enum_exports_sort_order": {
       "name": "enum_exports_sort_order",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "asc",
         "desc"
       ]
     },
-    "public.enum_exports_drafts": {
+    "iff.enum_exports_drafts": {
       "name": "enum_exports_drafts",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "yes",
         "no"
       ]
     },
-    "public.enum_imports_import_mode": {
+    "iff.enum_imports_import_mode": {
       "name": "enum_imports_import_mode",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "create",
         "update",
         "upsert"
       ]
     },
-    "public.enum_imports_status": {
+    "iff.enum_imports_status": {
       "name": "enum_imports_status",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "pending",
         "completed",
@@ -5466,26 +5524,26 @@
         "failed"
       ]
     },
-    "public.enum_payload_jobs_log_task_slug": {
+    "iff.enum_payload_jobs_log_task_slug": {
       "name": "enum_payload_jobs_log_task_slug",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "inline",
         "createCollectionExport",
         "createCollectionImport"
       ]
     },
-    "public.enum_payload_jobs_log_state": {
+    "iff.enum_payload_jobs_log_state": {
       "name": "enum_payload_jobs_log_state",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "failed",
         "succeeded"
       ]
     },
-    "public.enum_payload_jobs_task_slug": {
+    "iff.enum_payload_jobs_task_slug": {
       "name": "enum_payload_jobs_task_slug",
-      "schema": "public",
+      "schema": "iff",
       "values": [
         "inline",
         "createCollectionExport",
@@ -5493,7 +5551,9 @@
       ]
     }
   },
-  "schemas": {},
+  "schemas": {
+    "iff": "iff"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},
@@ -5503,6 +5563,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "96cc2904-6535-44d2-966e-039869c50c80",
+  "id": "a9df3e95-f085-4a97-a9fa-7d7e7e832c41",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }
