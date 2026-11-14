@@ -12,11 +12,14 @@ export const Media: CollectionConfig = {
     group: 'Library',
     useAsTitle: 'alt',
     defaultColumns: ['filename', 'alt', 'updatedAt'],
-    description: 'All photos used on the website. Upload the original photo (JPG, PNG or WebP); smaller copies for fast loading are made automatically.',
+    description: 'All photos used on the website. Upload JPG, PNG or WebP photos (logos can be SVG). Large photos are resized automatically, so you can upload straight from a camera. iPhone HEIC photos: export or share them as JPG first.',
   },
   access: { read: anyone, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
   upload: {
-    mimeTypes: ['image/*'],
+    // Web-displayable formats only (HEIC would upload but not display in most browsers).
+    mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/gif', 'image/svg+xml'],
+    // Keep stored originals web-sized: camera photos (6000px+) are scaled down on upload.
+    resizeOptions: { width: 2880, height: 2880, fit: 'inside', withoutEnlargement: true },
     focalPoint: true,
     imageSizes: [
       { name: 'thumb', width: 480, height: 320, position: 'centre' },

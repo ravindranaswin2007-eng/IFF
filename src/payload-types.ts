@@ -211,7 +211,7 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * All photos used on the website. Upload the original photo (JPG, PNG or WebP); smaller copies for fast loading are made automatically.
+ * All photos used on the website. Upload JPG, PNG or WebP photos (logos can be SVG). Large photos are resized automatically, so you can upload straight from a camera. iPhone HEIC photos: export or share them as JPG first.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -350,7 +350,7 @@ export interface Leader {
   createdAt: string;
 }
 /**
- * Shown under “Active Volunteers” on About Us. Once you add one, the placeholder cards disappear. To add many at once, use ⋮ → Import with a CSV.
+ * Shown under “Active Volunteers” on About Us. The Active Volunteers section appears on the site once you add the first one. To add many at once, use ⋮ → Import with a CSV.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "volunteers".

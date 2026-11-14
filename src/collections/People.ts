@@ -24,7 +24,7 @@ export const Leaders: CollectionConfig = {
 
 export const Volunteers: CollectionConfig = {
   slug: 'volunteers',
-  admin: { group: 'People', useAsTitle: 'name', defaultColumns: ['name', 'designation', 'organisation', 'city', 'active'], description: 'Shown under “Active Volunteers” on About Us. Once you add one, the placeholder cards disappear. To add many at once, use ⋮ → Import with a CSV.' },
+  admin: { group: 'People', useAsTitle: 'name', defaultColumns: ['name', 'designation', 'organisation', 'city', 'active'], description: 'Shown under “Active Volunteers” on About Us. The Active Volunteers section appears on the site once you add the first one. To add many at once, use ⋮ → Import with a CSV.' },
   access: { read: anyone, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
   defaultSort: 'order',
   fields: [

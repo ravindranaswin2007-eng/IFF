@@ -56,6 +56,8 @@ export default buildConfig({
     Submissions, Subscribers, Media, Documents, Resumes, Users,
   ],
   globals: [withRevalidate(SiteImages), withRevalidate(SiteSettings)],
+  // Allow full-size camera photos and report PDFs (resized/stored efficiently on upload).
+  upload: { limits: { fileSize: 50 * 1024 * 1024 } },
   editor: lexicalEditor(),
   db: postgresAdapter({
     pool: { connectionString: databaseUri(), ssl: process.env.DATABASE_SSL === 'true' || /sslmode=require/.test(databaseUri()) ? { rejectUnauthorized: false } : undefined,
@@ -87,7 +89,8 @@ export default buildConfig({
     vercelBlobStorage({
       enabled: !useS3 && Boolean(process.env.BLOB_READ_WRITE_TOKEN),
       alwaysInsertFields: true,
-      collections: { media: true, documents: true, resumes: true, exports: true, imports: true },
+      // Photos and public files load straight from Vercel's CDN; résumés and exports stay behind admin login.
+      collections: { media: { disablePayloadAccessControl: true }, documents: { disablePayloadAccessControl: true }, resumes: true, exports: true, imports: true },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
       addRandomSuffix: true,
     }),
