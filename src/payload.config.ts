@@ -58,7 +58,8 @@ export default buildConfig({
   editor: lexicalEditor(),
   db: postgresAdapter({
     pool: { connectionString: databaseUri(), ssl: process.env.DATABASE_SSL === 'true' || /sslmode=require/.test(databaseUri()) ? { rejectUnauthorized: false } : undefined,
-      max: process.env.VERCEL ? 3 : 10 },
+      max: process.env.VERCEL ? 2 : 10,
+      idleTimeoutMillis: process.env.VERCEL ? 5_000 : 30_000 },
     // Production applies the committed migrations on boot; development pushes schema changes directly.
     // Own schema keeps IFF tables out of any auto-exposed "public" API (e.g. Supabase's Data API).
     schemaName: process.env.DATABASE_SCHEMA || 'iff',
