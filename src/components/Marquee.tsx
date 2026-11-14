@@ -24,7 +24,7 @@ export function Gallery({ images }: { images: Media[] }) {
   const row = (hidden?: boolean) => (
     <div style={{ display: 'flex', gap: 18 }} aria-hidden={hidden || undefined}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      {images.map((m) => <figure key={m.id}><img src={(m.sizes as { card?: { url?: string } })?.card?.url || m.url || ''} alt={hidden ? '' : m.alt} loading="lazy" /></figure>)}
+      {images.map((m) => <figure key={m.url ?? m.id}><img src={(m.sizes as { card?: { url?: string } })?.card?.url || m.url || ''} alt={hidden ? '' : m.alt} loading="lazy" /></figure>)}
     </div>
   )
   return <section className="gallery-strip" aria-label="Event highlights" tabIndex={0}><div className="gallery-track">{row()}{row(true)}</div></section>
