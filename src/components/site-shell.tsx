@@ -5,8 +5,11 @@ import { Button } from '@/components/ui/button';
 import { navigation } from '@/lib/site';
 import logo from '@/assets/iff-logo.svg.asset.json';
 
+// The logo lives on Lovable's asset host; an absolute URL keeps it working when the site is hosted elsewhere (e.g. Vercel).
+const logoSrc = logo.url.startsWith('/') ? `https://indianfinancialforum.lovable.app${logo.url}` : logo.url;
+
 export function Logo({ inverse = false }: { inverse?: boolean }) {
-  return <Link to="/" aria-label="Indian Financial Forum home" className={`logo ${inverse ? 'logo-inverse' : ''}`}><img src={logo.url} alt="Indian Financial Forum" width={145} height={50} /></Link>;
+  return <Link to="/" aria-label="Indian Financial Forum home" className={`logo ${inverse ? 'logo-inverse' : ''}`}><img src={logoSrc} alt="Indian Financial Forum" width={145} height={50} /></Link>;
 }
 export function Header() {
   const [open, setOpen] = useState(false);
