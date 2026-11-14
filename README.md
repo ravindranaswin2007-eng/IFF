@@ -72,7 +72,7 @@ The same code runs on Vercel. It needs a Postgres database and a Vercel Blob sto
    |---|---|
    | `DATABASE_URI` | Postgres connection string. For Supabase: project → **Connect** → *Session pooler* URI (IPv4), with your database password filled in. |
    | `PAYLOAD_SECRET` | a long random string (`openssl rand -hex 32`) |
-   | `SERVER_URL` | the site URL, e.g. `https://iff.vercel.app` |
+   | `SERVER_URL` | optional — defaults to the project's Vercel production domain; set it once you add a custom domain |
 3. Project → **Storage → Create → Blob** and connect it to the project (this adds `BLOB_READ_WRITE_TOKEN`).
 4. Deploy. On first start the app creates its tables in the `iff` schema. Open `/admin` to create the first admin.
 

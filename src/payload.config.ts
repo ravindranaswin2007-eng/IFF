@@ -41,7 +41,7 @@ const withRevalidate = <T extends { hooks?: Record<string, unknown> }>(config: T
 })
 
 export default buildConfig({
-  serverURL: process.env.SERVER_URL || '',
+  serverURL: process.env.SERVER_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : ''),
   secret: process.env.PAYLOAD_SECRET || '',
   admin: {
     user: Users.slug,

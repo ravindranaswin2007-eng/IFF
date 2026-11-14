@@ -9,4 +9,7 @@ export const navigation = [
 ] as const
 
 export const siteName = 'Indian Financial Forum'
-export const siteUrl = process.env.SERVER_URL || 'http://localhost:3000'
+/** Public URL: SERVER_URL if set, else Vercel's production domain, else localhost. */
+export const siteUrl =
+  process.env.SERVER_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000')

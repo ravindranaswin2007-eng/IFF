@@ -18,7 +18,7 @@ export const Posts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'type', '_status', 'publishedAt'],
     description: 'Blogs, reports, podcasts and webinars shown in the Knowledge Hub. Save as draft to preview, then Publish to put it live.',
-    preview: (doc) => `${process.env.SERVER_URL || ''}/knowledge-hub/${doc.slug}`,
+    preview: (doc) => `/knowledge-hub/${doc.slug}`,
   },
   versions: { drafts: true, maxPerDoc: 20 },
   access: { read: publishedOrLoggedIn, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
