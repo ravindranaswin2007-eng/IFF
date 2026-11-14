@@ -19,6 +19,7 @@ import { Submissions, Subscribers } from './collections/Submissions'
 import { SiteImages, SiteSettings } from './globals/SiteImages'
 import { revalidateSite } from './hooks/revalidate'
 import { migrations } from './migrations'
+import { normaliseConnectionString } from './lib/db-url'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const useS3 = Boolean(process.env.S3_BUCKET)
@@ -29,7 +30,7 @@ const useS3 = Boolean(process.env.S3_BUCKET)
  */
 function databaseUri() {
   const direct = process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL
-  if (direct) return direct
+  if (direct) return normaliseConnectionString(direct)
   const { DB_HOST, DB_PORT = '5432', DB_NAME = 'iff', DB_USER, DB_PASSWORD } = process.env
   if (!DB_HOST || !DB_USER) return ''
   return `postgres://${encodeURIComponent(DB_USER)}:${encodeURIComponent(DB_PASSWORD ?? '')}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
