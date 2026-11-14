@@ -1,18 +1,12 @@
 export const navigation = [
-  { label: 'About Us', to: '/about' },
-  { label: 'For Professionals', to: '/professionals' },
-  { label: 'For Organisations', to: '/organisations' },
-  { label: 'Events', to: '/events' },
-  { label: 'Knowledge Hub', to: '/knowledge-hub' },
-  { label: 'Job Seekers', to: '/job-seekers' },
-  { label: 'Contact Us', to: '/contact' },
-] as const;
+  { label: 'About Us', href: '/about' },
+  { label: 'For Professionals', href: '/professionals' },
+  { label: 'For Organisations', href: '/organisations' },
+  { label: 'Events', href: '/events' },
+  { label: 'Knowledge Hub', href: '/knowledge-hub' },
+  { label: 'Job Seekers', href: '/job-seekers' },
+  { label: 'Contact Us', href: '/contact' },
+] as const
 
-export function pageHead(title: string, description: string) {
-  const fullTitle = `${title} | Indian Financial Forum`;
-  return { meta: [
-    { title: fullTitle }, { name: 'description', content: description },
-    { property: 'og:title', content: fullTitle }, { property: 'og:description', content: description },
-    { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' },
-  ] };
-}
+export const siteName = 'Indian Financial Forum'
+export const siteUrl = process.env.SERVER_URL || 'http://localhost:3000'

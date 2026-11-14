@@ -1,0 +1,11 @@
+{
+  "app": "npx tsx bin/iff.ts",
+  "context": {
+    "region": "ap-south-1",
+    "domainName": "",
+    "certificateArn": "",
+    "desiredCount": 1,
+    "dbInstanceClass": "t4g.micro",
+    "multiAz": false
+  }
+}
