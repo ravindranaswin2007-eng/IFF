@@ -5,6 +5,7 @@ import { FilterGrid } from '@/components/explorers'
 import { Gallery } from '@/components/Marquee'
 import { CountUp, Reveal, Stagger, StaggerItem } from '@/components/motion'
 import { ButtonLink, CtaBanner, FeatureCard, Hero, MediaOrFallback, SectionHead } from '@/components/ui'
+import { defaultEventImage } from '@/lib/default-photos'
 import { formatDate } from '@/lib/media'
 import { asMedia, getEvents, getPageImages } from '@/lib/payload'
 import type { Media } from '@/payload-types'
@@ -50,7 +51,7 @@ export default async function Events() {
                 </div>
                 <div><ButtonLink href={interestHref(featured)} variant="gold">{featured.registrationUrl ? 'Register' : 'Express interest'}</ButtonLink></div>
               </div>
-              <div className="media"><MediaOrFallback media={asMedia(featured.image) ?? asMedia(all.summit)} icon={Mic} size="wide" sizes="(max-width: 860px) 100vw, 45vw" /></div>
+              <div className="media"><MediaOrFallback media={asMedia(featured.image) ?? asMedia(all.summit) ?? defaultEventImage[featured.category]} icon={Mic} size="wide" sizes="(max-width: 860px) 100vw, 45vw" /></div>
             </Reveal>
           )}
           <FilterGrid

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowRight, CalendarDays, Clock, FileText, Headphones, Linkedin, MapPin, Mic, Newspaper, PlayCircle, Users } from 'lucide-react'
 import type { Event, Leader, Media, Post, Volunteer } from '@/payload-types'
 import { formatDate } from '@/lib/media'
+import { defaultEventImage } from '@/lib/default-photos'
 import { MediaOrFallback } from './ui'
 
 export const eventCategoryLabel: Record<string, string> = { summit: 'Flagship Summit', roundtable: 'Roundtable', webinar: 'Webinar', networking: 'Networking', weekly: 'Weekly Meeting' }
@@ -21,7 +22,7 @@ export function EventCard({ event }: { event: Event }) {
   return (
     <article className="card media-card">
       <div className="media">
-        <MediaOrFallback media={media(event.image)} icon={eventIcons[event.category] ?? Users} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+        <MediaOrFallback media={media(event.image) ?? defaultEventImage[event.category]} icon={eventIcons[event.category] ?? Users} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
         <span className="tag-float">{eventCategoryLabel[event.category]}</span>
         {date && (
           <span className="date-chip">
