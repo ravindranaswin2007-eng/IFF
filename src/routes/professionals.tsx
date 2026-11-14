@@ -4,8 +4,8 @@ import { BrainCircuit, TrendingUp, ShieldCheck, Coins, ChartNoAxesCombined, Cred
 import { Action, FeatureGrid, Section } from '@/components/iff';
 import { Button } from '@/components/ui/button';
 import { pageHead } from '@/lib/site';
-import gathering from '@/assets/professionals-gathering.jpg.asset.json';
-import skyline from '@/assets/professionals-skyline.jpg.asset.json';
+import gathering from '@/assets/photos/networking-conversation-2400.jpg';
+import skyline from '@/assets/photos/community-celebration-2400.jpg';
 
 export const Route = createFileRoute('/professionals')({
   head: () => pageHead('For Professionals', 'Join a thriving network of BFSI professionals through industry-focused communities, exclusive member benefits and opportunities to connect, learn and collaborate.'),
@@ -29,7 +29,7 @@ function Professionals() {
   if (!current) return null;
   return <div className="professionals-page">
     <section className="org-hero">
-      <img className="org-hero-image" src={gathering.url} alt="Professionals networking at an IFF gathering" fetchPriority="high" />
+      <img className="org-hero-image" src={gathering} alt="Members in conversation at an IFF networking evening" fetchPriority="high" />
       <div className="container org-hero-inner"><div className="hero-copy">
         <h1>For Professionals</h1>
         <p>Join a thriving network of BFSI professionals through industry-focused communities, exclusive member benefits and opportunities to connect, learn and collaborate.</p>
@@ -70,7 +70,7 @@ function Professionals() {
     </Section>
 
     <section className="section org-final" id="join">
-      <img src={skyline.url} alt="Professionals networking against a city skyline at dusk" loading="lazy" />
+      <img src={skyline} alt="IFF members celebrating together at a community meetup" loading="lazy" />
       <div className="container"><h2>Be Part of the Conversations Shaping BFSI</h2><p>Join a growing community of professionals committed to learning, collaboration and industry impact.</p>
         <div className="hero-buttons"><Action>Become a Member</Action><Action secondary>Contact Us</Action></div>
       </div>

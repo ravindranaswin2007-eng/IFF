@@ -3,9 +3,9 @@ import { Download, Handshake, Users, MessagesSquare, Lightbulb, Network, Megapho
 import { Action, Eyebrow, FeatureGrid, Section } from '@/components/iff';
 import { Button } from '@/components/ui/button';
 import { pageHead } from '@/lib/site';
-import roundtable from '@/assets/organisations-roundtable.jpg.asset.json';
-import panel from '@/assets/organisations-panel.jpg.asset.json';
-import reception from '@/assets/organisations-reception.jpg.asset.json';
+import roundtable from '@/assets/photos/leadership-dinner-2400.jpg';
+import panel from '@/assets/photos/panel-discussion-1280.jpg';
+import reception from '@/assets/photos/leaders-gathering-1600.jpg';
 
 export const Route = createFileRoute('/organisations')({
   head: () => pageHead('For Organisations', 'Partner with IFF to engage decision-makers, build brand credibility and create meaningful connections across the BFSI ecosystem.'),
@@ -15,7 +15,7 @@ export const Route = createFileRoute('/organisations')({
 function Organisations() {
   return <div className="organisations-page">
     <section className="org-hero">
-      <img className="org-hero-image" src={roundtable.url} alt="Senior BFSI leaders in a strategic roundtable discussion" fetchPriority="high" />
+      <img className="org-hero-image" src={roundtable} alt="IFF members at a leadership dinner" fetchPriority="high" />
       <div className="container org-hero-inner">
         <div className="hero-copy">
           <h1>For Organisations</h1>
@@ -39,7 +39,7 @@ function Organisations() {
 
     <section className="conversation-band org-editorial">
       <div className="container">
-        <img src={panel.url} alt="BFSI leaders on stage at an industry discussion" loading="lazy" />
+        <img src={panel} alt="Panel of speakers at an IFF session" loading="lazy" />
         <div>
           <Eyebrow>Partnerships that matter</Eyebrow>
           <h2>The right partnership puts your brand in the right room.</h2>
@@ -61,7 +61,7 @@ function Organisations() {
     </Section>
 
     <section className="section org-final" id="join">
-      <img src={reception.url} alt="Senior BFSI leaders at an evening industry reception" loading="lazy" />
+      <img src={reception} alt="BFSI leaders at an IFF gathering" loading="lazy" />
       <div className="container">
         <h2>Create meaningful industry impact.</h2>
         <p>Whether you want to partner, sponsor, collaborate or engage the ecosystem, we can shape an opportunity around what you are trying to achieve.</p>

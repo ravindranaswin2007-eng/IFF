@@ -12,8 +12,8 @@ type ContentType = 'Blogs' | 'Webinars';
 
 const typeIcons = { Blogs: Newspaper, Webinars: Video } as const;
 const thumbnails = {
-  Blogs: [photos.career, photos.conversation, photos.dialogue, photos.community],
-  Webinars: [photos.roundtable, photos.summit, photos.highlight, photos.dialogue],
+  Blogs: [photos.networkingConversation, photos.panelDiscussion, photos.membersListening, photos.leadersGathering],
+  Webinars: [photos.knowledgeSession, photos.speakerMic, photos.leadershipDinner, photos.cricketMeetup],
 };
 
 const content: { type: ContentType; title: string; text: string; meta: string }[] = [
@@ -42,7 +42,7 @@ function Knowledge() {
         {content.filter(item => item.type === type).map((item, index) => {
           const Icon = typeIcons[item.type];
           return <article className="feature-card knowledge-card" key={item.title}>
-            <img className="knowledge-thumbnail" src={thumbnails[item.type][index]} alt={`Placeholder thumbnail for ${item.title}`} width={640} height={360} loading="lazy" />
+            <img className="knowledge-thumbnail" src={thumbnails[item.type][index]} alt={`Thumbnail for ${item.title}`} width={640} height={360} loading="lazy" />
             <div className="knowledge-card-top"><Eyebrow>{item.type}</Eyebrow><Icon size={20} aria-hidden /></div>
             <h3>{item.title}</h3>
             <p>{item.text}</p>
