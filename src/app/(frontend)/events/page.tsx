@@ -1,80 +1,17 @@
 import type { Metadata } from 'next'
-import { CalendarDays, MapPin, Mic, PlayCircle, Users } from 'lucide-react'
-import { EventCard, eventCategoryLabel, interestHref } from '@/components/cards'
-import { FilterGrid } from '@/components/explorers'
-import { Gallery } from '@/components/Marquee'
-import { CountUp, Reveal, Stagger, StaggerItem } from '@/components/motion'
-import { ButtonLink, CtaBanner, FeatureCard, Hero, MediaOrFallback, SectionHead } from '@/components/ui'
-import { defaultEventImage } from '@/lib/default-photos'
-import { formatDate } from '@/lib/media'
-import { asMedia, getEvents, getPageImages } from '@/lib/payload'
-import type { Media } from '@/payload-types'
+import { Action, Callout, EventsGrid, FeatureGrid, Hero, Section, Stats } from '@/components/iff'
+import { eventPhoto, slot } from '@/lib/default-photos'
+import { eventCards } from '@/lib/content'
+import { asMedia, getPageImages, mediaUrl } from '@/lib/payload'
 
-export const metadata: Metadata = { title: 'Events', description: 'Explore IFF summits, executive roundtables, webinars and leadership gatherings.' }
-
-const formats = [
-  { title: 'Weekly meetings', text: 'Curated peer dialogues on pressing financial challenges, regulatory updates and industry narratives.', icon: CalendarDays, linkLabel: 'Every Thursday' },
-  { title: 'Executive roundtables', text: 'Closed-door Chatham House discussions for C-suite leaders and regulators.', icon: Users, linkLabel: 'Monthly C-suite sessions' },
-  { title: 'Webinars', text: 'Digital deep-dives on frameworks, compliance and operating strategy.', icon: PlayCircle, linkLabel: 'Pan-India virtual access' },
-  { title: 'Flagship summit', text: 'The annual assembly uniting institutional leaders, regulators and innovators.', icon: Mic, linkLabel: 'Annual summit' },
-]
+export const metadata: Metadata = { title: 'Events & Executive Experiences', description: 'Explore IFF summits, executive roundtables, webinars and leadership gatherings.' }
 
 export default async function Events() {
-  const [{ hero, banner, all }, events] = await Promise.all([getPageImages('events'), getEvents()])
-  const featured = events.find((e) => e.featured) ?? events.find((e) => e.category === 'summit')
-  const rest = events.filter((e) => e.id !== featured?.id)
-  const gallery = ((all.gallery ?? []) as unknown[]).map(asMedia).filter(Boolean) as Media[]
-  return (
-    <>
-      <Hero image={hero} breadcrumb="Events" eyebrow="Events" title={<>Experiences that bring the <em>BFSI ecosystem</em> together.</>} lead="From intimate conversations to industry-wide gatherings, IFF creates experiences that connect the ecosystem through knowledge, networking and collaboration." actions={<><ButtonLink href="#upcoming" variant="gold">Upcoming events</ButtonLink><ButtonLink href="/contact?interest=Sponsorship#enquiry" variant="ghost">Partner with us</ButtonLink></>} />
-
-      <section className="section">
-        <div className="container">
-          <SectionHead eyebrow="Structured engagement" title="Event formats." lead="Engage with the IFF community through formats tailored to your priorities." />
-          <Stagger className="grid grid-4">{formats.map((f) => <StaggerItem key={f.title}><FeatureCard {...f} /></StaggerItem>)}</Stagger>
-        </div>
-      </section>
-
-      <section className="section bg-cool" id="upcoming">
-        <div className="container">
-          <SectionHead eyebrow="Scheduled experiences" title="Upcoming events." />
-          {featured && (
-            <Reveal className="feature-event">
-              <div className="content">
-                <span className="gold-label">{eventCategoryLabel[featured.category]}</span>
-                <h3>{featured.title}</h3>
-                <p>{featured.summary}</p>
-                <div className="facts">
-                  <span><CalendarDays />{formatDate(featured.startDate, { day: 'numeric', month: 'long', year: 'numeric' }) ?? 'Date to be announced'}</span>
-                  {featured.city && <span><MapPin />{featured.city}</span>}
-                  {featured.format && <span><Users />{featured.format}</span>}
-                </div>
-                <div><ButtonLink href={interestHref(featured)} variant="gold">{featured.registrationUrl ? 'Register' : 'Express interest'}</ButtonLink></div>
-              </div>
-              <div className="media"><MediaOrFallback media={asMedia(featured.image) ?? asMedia(all.summit) ?? defaultEventImage[featured.category]} icon={Mic} size="wide" sizes="(max-width: 860px) 100vw, 45vw" /></div>
-            </Reveal>
-          )}
-          <FilterGrid
-            label="Event categories"
-            items={rest.map((e) => ({ key: e.id, category: e.category, node: <EventCard event={e} /> }))}
-            categories={Object.entries(eventCategoryLabel).map(([value, label]) => ({ value, label }))}
-            empty={!featured && <div className="empty-state"><h3>New dates are being finalised.</h3><p>Register your interest and we’ll invite you to the next session.</p><div className="section-foot" style={{ marginTop: 20 }}><ButtonLink href="/contact?interest=Event%20participation#enquiry">Notify me</ButtonLink></div></div>}
-          />
-        </div>
-      </section>
-
-      {gallery.length > 0 && <section className="section-tight"><Gallery images={gallery} /></section>}
-
-      <section className="section bg-navy">
-        <div className="container">
-          <SectionHead center eyebrow="Our footprint" title="By the numbers." />
-          <Stagger className="stats-band">
-            {[['500+', 'Experiences hosted'], ['5,000+', 'Professionals engaged'], ['250+', 'Industry speakers'], ['40+', 'Partner organisations']].map(([n, l]) => <StaggerItem key={l}><strong><CountUp value={n!} /></strong><h3>{l}</h3></StaggerItem>)}
-          </Stagger>
-        </div>
-      </section>
-
-      <CtaBanner image={banner} eyebrow="Co-create with IFF" title={<>Let’s create meaningful <em>industry experiences.</em></>} text="Collaborate with IFF to bring together professionals, leaders and organisations across the BFSI ecosystem." actions={<ButtonLink href="/contact?interest=Sponsorship#enquiry" variant="gold">Partner with IFF</ButtonLink>} />
-    </>
-  )
+  const [{ hero, all }, { cards, featured }] = await Promise.all([getPageImages('events'), eventCards()])
+  const gallery = ((all.gallery ?? []) as unknown[]).map(asMedia).filter(m => m?.url).map(m => ({ src: mediaUrl(m, 'card')!, alt: m!.alt }))
+  const strip = gallery.length ? gallery : slot.eventsStrip
+  const summitImage = (featured && mediaUrl(featured.image)) ?? mediaUrl(all.summit) ?? (featured ? eventPhoto[featured.category] : undefined) ?? slot.eventsSummit
+  const summitHref = featured ? featured.registrationUrl || `/contact?interest=event&event=${featured.slug}` : '/contact'
+  /* eslint-disable @next/next/no-img-element */
+  return <><Hero eyebrow="EVENTS" title={<>Experiences That Bring<br />the BFSI Ecosystem<br />Together</>} description="From intimate conversations to industry-wide gatherings, IFF creates meaningful experiences that connect the BFSI ecosystem through knowledge, networking and collaboration." image={mediaUrl(hero) ?? slot.eventsHero} caption="IFF Executive Networks" action="Partner with us" /><Section centered eyebrow="STRUCTURED ENGAGEMENT" title="Event Formats" description="Explore the different ways to engage with the IFF community across interactive formats tailored to your priorities."><FeatureGrid columns={4} items={[{title:'Weekly Meetings',text:'Curated peer-to-peer dialogues discussing pressing financial challenges, regulatory updates and emerging industry narratives.',link:'Every Thursday'},{title:'Executive Roundtables',text:'Closed-door Chatham House discussions limited to C-suite board members and regulators.',link:'Monthly C-Suite Sessions'},{title:'Webinars',text:'High-velocity digital deep-dives showcasing frameworks, masterclasses, compliance and operational strategies.',link:'Pan-India Virtual Access'},{title:'Flagship Event',text:'The apex annual assembly uniting institutional leaders and regulators.',link:'Annual Summit'}]} /></Section><Section blue eyebrow="SCHEDULED EXPERIENCES" title="Upcoming Events"><div className="summit-feature"><img src={summitImage} alt={featured?.title ?? 'IFF members celebrating together at a community meetup'} /><div><span className="gold-label">FLAGSHIP SUMMIT</span>{featured ? <><h2>{featured.title}</h2><p>{featured.summary}</p><div className="summit-meta">{featured.city && <span>{featured.city}</span>}{featured.format && <span>{featured.format}</span>}</div></> : <><h2>IFF Annual Leadership Summit 2026:<br />Navigating the Next Wave of Indian Banking</h2><p>Join C-suite visionaries, regulatory stalwarts, and infrastructure architects for a two-day symposium on economic resilience and generative AI.</p><div className="summit-meta"><span>Mumbai</span><span>In-Person & Plenary</span></div></>}<Action to={summitHref}>Express Interest</Action></div></div><EventsGrid events={cards} /></Section><section className="event-photo-strip" aria-label="Event highlights" tabIndex={0}><div className="event-photo-track">{[0, 1].map(copy => <div className="event-photo-set" key={copy} aria-hidden={copy === 1 ? true : undefined}>{strip.map(photo => <img key={photo.src} src={photo.src} alt={copy === 0 ? photo.alt : ''} />)}</div>)}</div></section><Section blue centered eyebrow="OUR FOOTPRINT" title="By the Numbers"><Stats animated items={ [['500+', 'Experiences Hosted'], ['5,000+', 'Professionals Engaged'], ['250+', 'Industry Speakers'], ['40+', 'Partner Organisations']] } /></Section><Callout title="Let’s Create Meaningful Industry Experiences" text="Collaborate with IFF to co-create experiences that bring together professionals, leaders and organisations across the BFSI ecosystem." action="Partner With IFF" /></>
 }

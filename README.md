@@ -4,7 +4,7 @@ The public website for the Indian Financial Forum plus an admin panel where the 
 
 | | |
 |---|---|
-| **Website** | Next.js 16 (React 19), server-rendered, with Motion animations |
+| **Website** | Next.js 16 (React 19), server-rendered. The UI is the client's original Lovable design (Tailwind v4 + the original stylesheet in `src/app/(frontend)/globals.css`) |
 | **CMS / admin** | Payload CMS 3, at `/admin` on the same site |
 | **Database** | PostgreSQL (Amazon RDS in production) |
 | **File storage** | Amazon S3 (photos, reports, podcasts, résumés) |
@@ -22,7 +22,7 @@ The public website for the Indian Financial Forum plus an admin panel where the 
 | **Settings → Site settings** | Logo, contact email/phone, offices, social links, partner logos, partnership brochure. |
 | **Settings → Users** | Admins (everything) and editors (content + enquiries). |
 
-Until a photo is uploaded, its slot shows a branded navy graphic — the site never shows stock or AI-generated images.
+Until a photo is uploaded, each image slot shows one of IFF's own event photos (`public/photos`, mapped in `src/lib/default-photos.ts`). Events, Knowledge Hub items, leaders, volunteers and partners added in the admin replace the client's original placeholder content on the site.
 
 ### Importing volunteer profiles from the Google Form
 

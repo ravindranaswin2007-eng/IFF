@@ -4,29 +4,25 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import type { Media, SiteImage, SiteSetting } from '@/payload-types'
 import type { PageKey } from '@/globals/SiteImages'
-import { defaultFeatureImages, defaultPageImages, lovableLogo } from './default-photos'
+import { lovableLogo } from './default-photos'
 
 export const payloadClient = cache(() => getPayload({ config }))
 
-/** Page photographs, with the interim Lovable photos filling any slot nobody has uploaded to yet. */
-export const getSiteImages = cache(async (): Promise<SiteImage> => {
-  const images = await (await payloadClient()).findGlobal({ slug: 'site-images', depth: 1 })
-  const merged = { ...images } as Record<string, unknown>
-  for (const [page, defaults] of Object.entries(defaultPageImages)) {
-    const group = (images[page as PageKey] ?? {}) as { hero?: unknown; banner?: unknown }
-    merged[page] = { ...group, hero: asMedia(group.hero) ?? defaults.hero, banner: asMedia(group.banner) ?? defaults.banner }
-  }
-  for (const key of ['summit', 'organisationsFeature', 'careersFeature', 'aboutStory'] as const) merged[key] = asMedia(images[key]) ?? defaultFeatureImages[key]
-  const gallery = ((images.gallery ?? []) as unknown[]).map(asMedia).filter(Boolean)
-  merged.gallery = gallery.length ? gallery : defaultFeatureImages.gallery
-  return merged as unknown as SiteImage
-})
+export const getSiteImages = cache(async (): Promise<SiteImage> => (await payloadClient()).findGlobal({ slug: 'site-images', depth: 1 }))
 export const getSettings = cache(async (): Promise<SiteSetting> => {
   const settings = await (await payloadClient()).findGlobal({ slug: 'site-settings', depth: 1 })
-  return { ...settings, logo: asMedia(settings.logo) ?? lovableLogo }
+  return { ...settings, logo: asMedia(settings.logo) ?? (lovableLogo as unknown as Media) }
 })
 
 export const asMedia = (value: unknown): Media | null => (value && typeof value === 'object' && 'url' in value ? (value as Media) : null)
+
+/** URL of an uploaded image at a preferred size, or undefined when nothing is uploaded. */
+export function mediaUrl(value: unknown, size: 'thumb' | 'card' | 'wide' | 'xl' = 'wide'): string | undefined {
+  const m = asMedia(value)
+  if (!m?.url) return undefined
+  const sized = (m.sizes as Record<string, { url?: string | null } | undefined> | undefined)?.[size]?.url
+  return sized || m.url
+}
 
 export async function getPageImages(page: PageKey) {
   const images = await getSiteImages()

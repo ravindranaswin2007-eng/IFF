@@ -1,14 +1,16 @@
-import { ButtonLink } from '@/components/ui'
+import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <section className="not-found">
-      <div>
-        <span className="eyebrow">404</span>
-        <h1 className="h1" style={{ margin: '18px 0' }}>This page has moved on.</h1>
-        <p className="lead" style={{ marginBottom: 32 }}>The link may be outdated. Let’s get you back to the conversation.</p>
-        <ButtonLink href="/">Back to home</ButtonLink>
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="max-w-md text-center">
+        <h1 className="text-7xl font-bold text-foreground">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <p className="mt-2 text-sm text-muted-foreground">The page you&apos;re looking for doesn&apos;t exist or has been moved.</p>
+        <div className="mt-6">
+          <Link href="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">Go home</Link>
+        </div>
       </div>
-    </section>
+    </div>
   )
 }

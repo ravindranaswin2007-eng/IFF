@@ -1,44 +1,38 @@
-import type { Metadata, Viewport } from 'next'
-import { Manrope, Newsreader } from 'next/font/google'
+import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
-import { Footer } from '@/components/Footer'
-import { Header } from '@/components/Header'
-import { Logo } from '@/components/Logo'
-import { MotionProvider, ScrollProgress } from '@/components/motion'
-import { asMedia, getSettings } from '@/lib/payload'
-import { siteName, siteUrl } from '@/lib/site'
+import { Footer, Header } from '@/components/site-shell'
+import { getSettings, mediaUrl } from '@/lib/payload'
+import { siteUrl } from '@/lib/site'
 import './globals.css'
 
 // Content comes from the CMS, so pages render on request (and are refreshed when editors publish).
 export const dynamic = 'force-dynamic'
 
-const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope', display: 'swap' })
-const newsreader = Newsreader({ subsets: ['latin'], variable: '--font-newsreader', style: ['normal', 'italic'], weight: ['400', '500', '600'], display: 'swap' })
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: `${siteName} — The community behind BFSI leadership`, template: `%s · ${siteName}` },
+  title: { default: 'Indian Financial Forum', template: '%s | Indian Financial Forum' },
   description: 'India’s community for financial leadership, institutional dialogue and BFSI collaboration.',
-  openGraph: { type: 'website', siteName, locale: 'en_IN' },
+  authors: [{ name: 'Indian Financial Forum' }],
+  openGraph: { title: 'Indian Financial Forum', description: 'Connecting India’s financial leadership.', type: 'website' },
   twitter: { card: 'summary_large_image' },
-  icons: { icon: '/favicon.svg' },
+  icons: { icon: { url: '/favicon.svg', type: 'image/svg+xml' } },
 }
-export const viewport: Viewport = { themeColor: '#0a1b3b' }
 
 export default async function FrontendLayout({ children }: { children: ReactNode }) {
   const settings = await getSettings()
-  const logo = asMedia(settings.logo)
-  const inverse = asMedia(settings.logoInverse)
+  const logo = mediaUrl(settings.logo) ?? ''
   return (
-    <html lang="en-IN" className={`${manrope.variable} ${newsreader.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" />
+      </head>
       <body>
-        <a className="skip-link" href="#main">Skip to content</a>
-        <MotionProvider>
-          <ScrollProgress />
-          <Header logo={<Logo logo={logo} />} logoInverse={inverse ? <Logo logo={inverse} /> : <Logo logo={logo} inverse />} />
-          <main id="main">{children}</main>
-          <Footer settings={settings} logo={inverse ? <Logo logo={inverse} /> : <Logo logo={logo} inverse />} />
-        </MotionProvider>
+        <Header logo={logo} />
+        <main>{children}</main>
+        <Footer logo={logo} />
       </body>
     </html>
   )

@@ -1,82 +1,20 @@
 import type { Metadata } from 'next'
-import { BookOpen, Handshake, Lightbulb, Megaphone, Sparkles, Users } from 'lucide-react'
-import { PersonCard } from '@/components/cards'
-import { DrawLine, Reveal, Stagger, StaggerItem } from '@/components/motion'
-import { ButtonLink, CtaBanner, Eyebrow, FeatureCard, Hero, MediaOrFallback, SectionHead } from '@/components/ui'
-import { asMedia, getPageImages, getPeople } from '@/lib/payload'
+import { UserRound } from 'lucide-react'
+import { Action, Callout, FeatureGrid, Hero, Partners, Section } from '@/components/iff'
+import { slot } from '@/lib/default-photos'
+import { partnerNames } from '@/lib/content'
+import { getPageImages, getPeople, mediaUrl } from '@/lib/payload'
+import type { Leader, Volunteer } from '@/payload-types'
 
-export const metadata: Metadata = { title: 'About Us', description: 'Meet the community, leadership and core values behind the Indian Financial Forum.' }
+export const metadata: Metadata = { title: 'About IFF', description: 'Meet the community, leadership and core values behind the Indian Financial Forum.' }
 
-const journey = [
-  ['Genesis & vision', 'Founded with a clear purpose: to create a trusted platform for genuine regulatory, policy and operational debate.'],
-  ['Pan-India chapters', 'Rapid scaling across financial and technology hubs, connecting regional leadership with national perspectives.'],
-  ['5,000+ fellowships', 'Cross-functional executive networks across banking, insurance, asset management and fintech.'],
-  ['Institutional council', 'Experienced decision-makers guiding dialogue, innovation and responsible industry collaboration.'],
-]
-
-const pillars = [
-  { title: 'Community first', icon: Users, text: 'Long-term, high-trust relationships built on genuine peer exchange.' },
-  { title: 'Knowledge exchange', icon: BookOpen, text: 'Practitioner-led insight on policy, risk, technology and leadership.' },
-  { title: 'High-level collaboration', icon: Handshake, text: 'Bringing institutions, regulators and innovators to the same table.' },
-  { title: 'Executive leadership', icon: Sparkles, text: 'Developing the leaders who will shape India’s financial future.' },
-  { title: 'Visibility & discovery', icon: Megaphone, text: 'Giving members and partners a platform for their ideas and work.' },
-  { title: 'Financial innovation', icon: Lightbulb, text: 'Championing responsible innovation across the BFSI ecosystem.' },
-]
+const initials = (name: string) => name.split(' ').map(s => s[0]).join('')
+const role = (p: Leader | Volunteer) => [p.designation, p.organisation].filter(Boolean).join(', ')
 
 export default async function About() {
-  const [{ hero, banner, all }, { leaders, volunteers }] = await Promise.all([getPageImages('about'), getPeople()])
-  const community = leaders.filter((l) => l.group === 'community')
-  const advisory = leaders.filter((l) => l.group === 'advisory')
-  return (
-    <>
-      <Hero image={hero} breadcrumb="About Us" eyebrow="About IFF" title={<>Who we are — empowering India’s <em>BFSI leadership.</em></>} lead="An industry-first platform uniting executive leadership and forward-looking practitioners across banking, securities markets, insurance, asset management and fintech." actions={<ButtonLink href="/professionals" variant="gold">Explore communities</ButtonLink>} />
-
-      <section className="section">
-        <div className="container split">
-          <Reveal>
-            <Eyebrow>Our story</Eyebrow>
-            <h2 className="h2" style={{ margin: '18px 0 22px' }}>Where BFSI governance meets <em>real dialogue.</em></h2>
-            <p className="lead">We activate trusted peer-to-peer conversations, institutional proximity and cross-sector collaboration to elevate India’s financial architecture.</p>
-            <p className="lead" style={{ marginTop: 14 }}>What began as an informal network of industry leaders is now a pan-India community of practitioners, regulators and innovators.</p>
-          </Reveal>
-          <Reveal delay={0.15} className="split-media"><MediaOrFallback media={asMedia(all.aboutStory)} size="wide" sizes="(max-width: 900px) 100vw, 50vw" /></Reveal>
-        </div>
-      </section>
-
-      <section className="section bg-paper">
-        <div className="container">
-          <SectionHead eyebrow="Our journey" title="From a closed-door circle to a pan-India community." lead="The milestones that transformed an informal network of financial leaders into an influential institution." />
-          <div className="timeline">
-            <DrawLine className="timeline-line" />
-            {journey.map(([t, d], i) => (
-              <Reveal key={t} delay={i * 0.12} className="timeline-step"><span className="dot">0{i + 1}</span><h3>{t}</h3><p>{d}</p></Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <SectionHead center eyebrow="The ecosystem engine" title="Six pillars of ecosystem impact." lead="Designed by practitioners, for practitioners." />
-          <Stagger className="grid grid-3">{pillars.map((p, i) => <StaggerItem key={p.title}><FeatureCard icon={p.icon} title={p.title} text={p.text} index={i} /></StaggerItem>)}</Stagger>
-        </div>
-      </section>
-
-      <section className="section bg-cool" id="leadership">
-        <div className="container">
-          <SectionHead eyebrow="Governance & stewardship" title="Leadership & ecosystem council." lead="Guided by senior practitioners committed to an uncompromising standard of BFSI dialogue." />
-          {community.length > 0 && (<><div className="subhead"><h3>Community leadership</h3></div><Stagger className="people-grid">{community.map((p) => <StaggerItem key={p.id}><PersonCard person={p} /></StaggerItem>)}</Stagger></>)}
-          {advisory.length > 0 && (<><div className="subhead"><h3>Senior advisory council</h3></div><Stagger className="people-grid">{advisory.map((p) => <StaggerItem key={p.id}><PersonCard person={p} /></StaggerItem>)}</Stagger></>)}
-          <div id="volunteers" className="subhead"><h3>Active volunteers</h3>{volunteers.length > 0 && <span>{volunteers.length} people powering IFF chapters</span>}</div>
-          {volunteers.length > 0 ? (
-            <Stagger className="people-grid compact">{volunteers.map((v) => <StaggerItem key={v.id}><PersonCard person={v} /></StaggerItem>)}</Stagger>
-          ) : (
-            <div className="empty-state"><h3>Volunteer profiles are on their way.</h3><p>Want to help run an IFF chapter? <a className="link-arrow" href="/contact?interest=Other">Get in touch</a></p></div>
-          )}
-        </div>
-      </section>
-
-      <CtaBanner image={banner} title={<>Ready to make an impact with <em>IFF?</em></>} text="Connect with peers across banking, securities, insurance and fintech to shape industry perspectives and create enduring professional value." actions={<><ButtonLink href="/contact?interest=membership" variant="gold">Become a member</ButtonLink><ButtonLink href="/contact?interest=Other" variant="ghost">Volunteer with us</ButtonLink></>} />
-    </>
-  )
+  const [{ hero }, { leaders, volunteers }, partners] = await Promise.all([getPageImages('about'), getPeople(), partnerNames()])
+  const community = leaders.filter(l => l.group === 'community')
+  const advisory = leaders.filter(l => l.group === 'advisory')
+  const leaderCards = community.length ? community.map(l => ({ key: l.id, name: l.name, role: role(l) || 'Founding leadership', photo: mediaUrl(l.photo, 'thumb') })) : ['Abhishek Varshney', 'Arnab', 'Sachin Agarwal'].map(n => ({ key: n, name: n, role: 'Founding leadership', photo: undefined }))
+  return <><Hero eyebrow="ABOUT IFF" title={<>Who We Are —<br />Empowering India’s <em>BFSI Leadership</em></>} description="An industry-first platform uniting executive leadership and forward-looking practitioners across banking, securities markets, insurance, asset management, and fintech. We activate trusted peer-to-peer dialogues, institutional proximity, and cross-sector collaboration to elevate India’s financial architecture." image={mediaUrl(hero) ?? slot.aboutHero} caption="Where BFSI Governance Meets Real Dialogue"><Action secondary to="/professionals">Explore Communities</Action></Hero><Section eyebrow="OUR JOURNEY" title="From a Closed-Door Syndicate to India’s Preeminent Financial Community" description="Explore the milestones that transformed an informal network of financial industry leaders into an influential pan-India financial institution."><div className="timeline">{[['Genesis & Vision','Founded with a clear purpose: to create a trusted platform for genuine regulatory, policy and operational debate.'],['Pan-India Chapters','Rapid scaling across financial and technology hubs, connecting regional leadership with national perspectives.'],['5,000+ Fellowships','Cross-functional executive networks encompassing banking, insurance, asset management and fintech.'],['Institutional Apex Council','Experienced decision-makers guiding dialogue, innovation and responsible industry collaboration.']].map(([t,d],i) => <div key={t}><span className="number-badge">0{i+1}</span><h3>{t}</h3><p>{d}</p></div>)}</div></Section><Section blue centered eyebrow="THE ECOSYSTEM ENGINE" title="Our Six Core Pillars of Ecosystem Impact" description="Designed by practitioners for practitioners to drive uncompromised institutional relevance and peer connection."><FeatureGrid items={['Community First','Knowledge Exchange','High-Level Collaboration','Executive Leadership','Visibility & Discovery','Financial Innovation'].map(t => ({title:t,text:'Building long-term, high-trust relationships and meaningful dialogue across India’s financial ecosystem.'}))} /></Section><Section eyebrow="GOVERNANCE & STEWARDSHIP" title="Leadership & Ecosystem Council" description="Guided by senior practitioners dedicated to maintaining an uncompromised standard of BFSI dialogue across the ecosystem."><h3 className="subheading">Community Leadership</h3><div className="leaders">{leaderCards.map(l => <article key={l.key}>{/* eslint-disable-next-line @next/next/no-img-element */}{l.photo ? <img className="avatar-initials" src={l.photo} alt={l.name} style={{ objectFit: 'cover' }} /> : <span className="avatar-initials">{initials(l.name)}</span>}<div><h3>{l.name}</h3><p>{l.role}</p></div></article>)}</div><h3 className="subheading">Senior Advisory Council</h3>{advisory.length ? <div className="leaders">{advisory.map(l => <article key={l.id}>{/* eslint-disable-next-line @next/next/no-img-element */}{mediaUrl(l.photo, 'thumb') ? <img className="avatar-initials" src={mediaUrl(l.photo, 'thumb')} alt={l.name} style={{ objectFit: 'cover' }} /> : <span className="avatar-initials">{initials(l.name)}</span>}<div><h3>{l.name}</h3><p>{role(l) || 'Senior Advisory Council'}</p></div></article>)}</div> : <FeatureGrid columns={4} items={['Banking & Finance','Insurance Leadership','Capital Markets','Regulatory Dialogue'].map(t => ({title:t,text:'Independent perspectives from experienced financial leaders.'}))} />}<h3 className="subheading" id="active-volunteers-heading">Active Volunteers</h3><div className="volunteers-grid" role="region" aria-labelledby="active-volunteers-heading">{volunteers.length ? volunteers.map(v => { const src = mediaUrl(v.photo, 'thumb'); return <article className="volunteer-card" key={v.id}>{/* eslint-disable-next-line @next/next/no-img-element */}{src ? <img className="avatar-initials" src={src} alt={v.name} style={{ objectFit: 'cover' }} /> : <span className="avatar-initials"><UserRound size={22} aria-hidden="true" /></span>}<h4>{v.name}</h4><p>{role(v) || 'Volunteer'}</p></article> }) : Array.from({ length: 12 }, (_, i) => <article className="volunteer-card" key={i}><span className="avatar-initials"><UserRound size={22} aria-hidden="true" /></span><h4>Volunteer {String(i + 1).padStart(2, '0')}</h4><p>Placeholder</p></article>)}</div><h3 className="subheading">Institutional Ecosystem Participation</h3><Partners names={partners} /></Section><Callout title="Ready to Make an Impact with IFF?" text="Join India’s leading financial leadership network. Connect with peers across banking, securities, insurance and fintech to accelerate governance, shape industry perspectives, and create enduring professional value." /></>
 }
