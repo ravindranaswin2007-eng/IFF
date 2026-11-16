@@ -50,9 +50,16 @@ if (!settings.partners?.length) {
   })
 }
 
-if (process.env.SEED_ADMIN_EMAIL && process.env.SEED_ADMIN_PASSWORD) {
-  const existing = await payload.find({ collection: 'users', where: { email: { equals: process.env.SEED_ADMIN_EMAIL } }, limit: 1 })
-  if (!existing.docs.length) await payload.create({ collection: 'users', data: { email: process.env.SEED_ADMIN_EMAIL, password: process.env.SEED_ADMIN_PASSWORD, name: 'Administrator', role: 'admin' } })
+const adminEmail = process.env.SEED_ADMIN_EMAIL || 'uniquegrimreaper@gmail.com'
+const adminPassword = process.env.SEED_ADMIN_PASSWORD || 'omega#12345'
+
+const existingAdmin = await payload.find({ collection: 'users', where: { email: { equals: adminEmail } }, limit: 1 })
+if (!existingAdmin.docs.length) {
+  await payload.create({ collection: 'users', data: { email: adminEmail, password: adminPassword, name: 'Administrator', role: 'admin' } })
+  payload.logger.info(`Created admin account: ${adminEmail}`)
+} else {
+  await payload.update({ collection: 'users', id: existingAdmin.docs[0].id, data: { role: 'admin', password: adminPassword } })
+  payload.logger.info(`Updated admin account credentials: ${adminEmail}`)
 }
 
 payload.logger.info('Seed complete.')

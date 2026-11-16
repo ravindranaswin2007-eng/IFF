@@ -683,24 +683,12 @@ export interface PayloadLockedDocument {
         value: number | Volunteer;
       } | null)
     | ({
-        relationTo: 'submissions';
-        value: number | Submission;
-      } | null)
-    | ({
-        relationTo: 'subscribers';
-        value: number | Subscriber;
-      } | null)
-    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
     | ({
         relationTo: 'documents';
         value: number | Document;
-      } | null)
-    | ({
-        relationTo: 'resumes';
-        value: number | Resume;
       } | null)
     | ({
         relationTo: 'users';

@@ -15,6 +15,7 @@
     "migrate": "payload migrate",
     "migrate:create": "payload migrate:create",
     "seed": "payload run src/scripts/seed.ts",
+    "set:admin": "payload run src/scripts/set-admin.ts",
     "import:volunteers": "payload run src/scripts/import-volunteers.ts"
   },
   "engines": {

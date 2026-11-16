@@ -6,7 +6,8 @@ export const Resumes: CollectionConfig = {
   slug: 'resumes',
   labels: { singular: 'Résumé', plural: 'Résumés' },
   admin: { group: 'Enquiries', hidden: true, description: 'Résumés open from the job-seeker enquiry they belong to.' },
-  access: { read: isLoggedIn, create: () => false, update: isLoggedIn, delete: isLoggedIn },
+  access: { read: isLoggedIn, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
+  lockDocuments: false,
   upload: { mimeTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'] },
   fields: [{ name: 'candidate', type: 'text' }],
 }

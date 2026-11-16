@@ -5,7 +5,7 @@ export const Users: CollectionConfig = {
   slug: 'users',
   auth: { tokenExpiration: 60 * 60 * 8, maxLoginAttempts: 5, lockTime: 15 * 60 * 1000 },
   admin: { useAsTitle: 'email', group: 'Settings', defaultColumns: ['name', 'email', 'role'] },
-  access: { read: isLoggedIn, create: isAdmin, update: ({ req, id }) => req.user?.role === 'admin' || req.user?.id === id, delete: isAdmin },
+  access: { read: isLoggedIn, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
   fields: [
     { name: 'name', type: 'text' },
     {

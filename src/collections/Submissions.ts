@@ -21,7 +21,8 @@ export const Submissions: CollectionConfig = {
     listSearchableFields: ['name', 'email', 'organisation'],
     description: 'Form fills, membership requests, speaker applications and job-seeker profiles. Use Filters to narrow the list and the ⋮ menu → Export to download CSV.',
   },
-  access: { read: isLoggedIn, create: () => false, update: isLoggedIn, delete: isAdmin },
+  access: { read: isLoggedIn, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
+  lockDocuments: false,
   defaultSort: '-createdAt',
   fields: [
     {
@@ -48,6 +49,7 @@ export const Subscribers: CollectionConfig = {
   slug: 'subscribers',
   labels: { singular: 'Newsletter subscriber', plural: 'Newsletter subscribers' },
   admin: { group: 'Enquiries', useAsTitle: 'email', defaultColumns: ['email', 'createdAt'] },
-  access: { read: isLoggedIn, create: () => false, update: isLoggedIn, delete: isLoggedIn },
+  access: { read: isLoggedIn, create: isLoggedIn, update: isLoggedIn, delete: isLoggedIn },
+  lockDocuments: false,
   fields: [{ name: 'email', type: 'email', required: true, unique: true }],
 }
